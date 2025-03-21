@@ -1,3 +1,6 @@
+import Time from "./Time.js";
+import WindowManager from "./WindowManager.js";
+
 /**
  * Manages gameloop and houses subsystems.
  */
@@ -5,7 +8,7 @@ export default class Runtime {
 	/**
 	 * Create an empty save file.
 	 */
-	static createInitialSaveFile() {
+	static createInitialSaveData() {
 		return {
 			time: 0,
 
@@ -18,19 +21,23 @@ export default class Runtime {
 
 	/**
 	 * Create a new `Runtime` instance.
-	 * @param {Object} saveFile The loaded save to use.
+	 * @param {Object} save The loaded save to use.
 	 */
-	constructor(saveFile) {
+	constructor(save) {
 		this.constructs = [];
 
 		this.active = false;
 
-		if (!saveFile)
+		this.windowManager = new WindowManager(this);
+
+		if (!save)
 			throw new Error("Runtime constructor not provided a save file.");
 
-		this.saveFile = saveFile;
+		this.save = save;
 
-		console.log("Loaded save:", this.saveFile);
+		this.time = new Time(this);
+
+		console.log("Loaded save:", this.save);
 	}
 
 	/**
@@ -45,7 +52,7 @@ export default class Runtime {
 	 */
 	start = () => {
 		if (!this.active) {
-			this.time = 0;
+			this.lft = 0;
 			this.active = true;
 			requestAnimationFrame(this.__onAnimationFrame);
 		}
@@ -59,9 +66,9 @@ export default class Runtime {
 	};
 
 	__onBeforeTick = (time) => {
-		this.dt = time - (this.time || 0);
-		this.time = time;
-		this.saveFile.time += this.dt; // Record the current time.
+		this.dt = time - (this.lft || 0);
+		this.lft = time;
+		this.save.time += this.dt; // Record the current time.
 
 		for (const construct of this.constructs)
 			construct.onBeforeTick && construct.onBeforeTick(time);

@@ -1,5 +1,3 @@
-import Runtime from "./Runtime.js";
-
 /**
  * An object jacked into the runtime and given access to the gameloop.
  */

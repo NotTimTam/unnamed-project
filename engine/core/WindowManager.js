@@ -1,5 +1,16 @@
-import GUIAnchor from "./GUIAnchor.js";
+import Construct from "./Construct.js";
 
-export class Window extends GUIAnchor {
-	constructor() {}
+/**
+ * Manages `Window` instances.
+ */
+export default class WindowManager extends Construct {
+	/**
+	 * Create a new `WindowManager` instance.
+	 * @param {Runtime} runtime The runtime to use.
+	 */
+	constructor(runtime) {
+		super(runtime);
+
+		this.windows = [];
+	}
 }
