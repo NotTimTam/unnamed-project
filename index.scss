@@ -70,9 +70,23 @@ div.window {
 
 	background-color: var(--background-2);
 
+	&:not(:focus-within):not(:focus):not(*:active) {
+		opacity: 0.75;
+
+		&::before {
+			opacity: 0;
+		}
+	}
+
 	&:has(> header.window-header > div.drag-area:active) {
 		*:not(> header.window-header > div.drag-area:active) {
 			pointer-events: none;
+		}
+
+		> header.window-header {
+			> h2.header-title {
+				background-color: var(--orange);
+			}
 		}
 	}
 

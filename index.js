@@ -10,7 +10,7 @@ runtime.start();
 const window = runtime.gui.Window();
 
 window.move(16, 16);
-window.title = "When";
+window.title = "Calendar";
 
 document.body.appendChild(window.element);
 

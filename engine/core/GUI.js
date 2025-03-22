@@ -117,6 +117,8 @@ export default class GUI extends Construct {
 		__initializeElements() {
 			this.element.className = "window";
 
+			this.element.setAttribute("tabIndex", 0);
+
 			const header = document.createElement("header");
 			header.className = "window-header";
 
