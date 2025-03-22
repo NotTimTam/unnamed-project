@@ -70,6 +70,24 @@ export default class GUI extends Construct {
 			this.__initializeElements();
 		}
 
+		/**
+		 * Get the current window title.
+		 */
+		get title() {
+			return this.element.querySelector(
+				"header.window-header h2.header-title"
+			).innerText;
+		}
+
+		/**
+		 * Set the window's title.
+		 */
+		set title(n) {
+			this.element.querySelector(
+				"header.window-header h2.header-title"
+			).innerText = n;
+		}
+
 		beginDrag = ({ clientX, clientY }) => {
 			this.inDrag = true;
 
@@ -114,6 +132,11 @@ export default class GUI extends Construct {
 			dragArea.onmousedown = () => {
 				this.inDrag = true;
 			};
+
+			const title = document.createElement("h2");
+			title.className = "header-title";
+			header.appendChild(title);
+			title.innerHTML = "Untitled Window";
 
 			const button = document.createElement("button");
 			button.type = "button";
