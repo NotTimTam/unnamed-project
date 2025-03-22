@@ -13,7 +13,12 @@ export default [
 				text.updateText(
 					runtime.time.getDateTimeDisplay(false) +
 						"\n" +
-						runtime.time.getEpochDisplay()
+						runtime.time.getEpochDisplay() +
+						"\n\n" +
+						runtime.time.getTotalDays() +
+						` day${
+							runtime.time.getTotalDays() === 1 ? "" : "s"
+						} elapsed since the Epoch.`
 				);
 		},
 	},

@@ -170,56 +170,59 @@ export default class Time {
 	 * The epoch (timestamp 0) starts at **year 0**.
 	 * @returns {number} In-game full year.
 	 */
-	getTotalYears = () => Math.floor(this.getTotalDays() / Time.daysPerYear);
+	getTotalYears = () =>
+		Math.floor(this.getTotalDays() / Time.daysPerYear) + 1;
 
 	/**
 	 * Returns the total number of in-game decades elapsed.
 	 * @returns {number} Total in-game decades.
 	 */
 	getTotalDecades = () =>
-		Math.floor(this.getTotalYears() / Time.yearsPerDecade);
+		Math.floor(this.getTotalYears() / Time.yearsPerDecade) + 1;
 
 	/**
 	 * Returns the total number of in-game centuries elapsed.
 	 * @returns {number} Total in-game centuries.
 	 */
 	getTotalCenturies = () =>
-		Math.floor(this.getTotalYears() / Time.yearsPerCentury);
+		Math.floor(this.getTotalYears() / Time.yearsPerCentury) + 1;
 
 	/**
 	 * Returns the total number of in-game eras elapsed.
 	 * @returns {number} Total in-game eras.
 	 */
-	getTotalEras = () => Math.floor(this.getTotalYears() / 1000);
+	getTotalEras = () => Math.floor(this.getTotalYears() / 1000) + 1;
 
 	/**
 	 * Returns the total number of in-game ages elapsed.
 	 * @returns {number} Total in-game ages.
 	 */
-	getTotalAges = () => Math.floor(this.getTotalYears() / 10000);
+	getTotalAges = () => Math.floor(this.getTotalYears() / 10000) + 1;
 
 	/**
-	 * Returns the current in-game year within the decade (0-9).
+	 * Returns the current in-game year within the decade (1-10).
 	 * @returns {number} In-game year in the current decade.
 	 */
-	getYearInDecade = () => this.getTotalYears() % Time.yearsPerDecade;
+	getYearInDecade = () => (this.getTotalYears() % Time.yearsPerDecade) + 1;
 
 	/**
-	 * Returns the current in-game decade within the century (0-9).
+	 * Returns the current in-game decade within the century (1-10).
 	 * @returns {number} In-game decade in the current century.
 	 */
 	getDecadeInCentury = () =>
-		this.getTotalDecades() % (Time.yearsPerCentury / Time.yearsPerDecade);
+		(this.getTotalDecades() %
+			(Time.yearsPerCentury / Time.yearsPerDecade)) +
+		1;
 
 	/**
-	 * Returns the current in-game century within the era (0-9).
+	 * Returns the current in-game century within the era (1-10).
 	 * @returns {number} In-game century in the current era.
 	 */
 	getCenturyInEra = () =>
-		this.getTotalCenturies() % (1000 / Time.yearsPerCentury);
+		(this.getTotalCenturies() % (1000 / Time.yearsPerCentury)) + 1;
 
 	/**
-	 * Returns the current in-game era within the age (0-9).
+	 * Returns the current in-game era within the age (1-10).
 	 * @returns {number} In-game era in the current age.
 	 */
 	getEraInAge = () => this.getTotalEras() % (10000 / 1000);
@@ -303,7 +306,9 @@ export default class Time {
 		`${this.getDateDisplay(compact)}, ${this.getTimeDisplay(true, false)}`;
 
 	getEpochDisplay = () =>
-		`Year of our Lord ${this.getTotalYears()}, in the ${this.getOrdinalSuffix(
+		`${this.getOrdinalSuffix(
+			this.getTotalYears()
+		)} Year of our Lord, in the ${this.getOrdinalSuffix(
 			this.getEraInAge()
 		)} Era of the ${this.getOrdinalSuffix(this.getTotalAges())} Age`;
 }
