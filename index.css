@@ -253,7 +253,9 @@ div.window div.journal-content textarea {
 div.window div.journal-content p.journal-entry-content {
   max-height: 256px;
   max-width: 256px;
+  word-wrap: break-word;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 div.window div.journal-content ul.journal-entry-list {
   list-style: none;

@@ -324,7 +324,10 @@ div.window {
 			max-height: 256px;
 			max-width: 256px;
 
+			word-wrap: break-word;
+
 			overflow-y: auto;
+			overflow-x: hidden;
 		}
 
 		ul.journal-entry-list {
