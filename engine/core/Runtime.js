@@ -27,6 +27,7 @@ export default class Runtime {
 		this.constructs = [];
 
 		this.active = false;
+		this.currentFileHandler = null;
 
 		this.gui = new GUI(this);
 
@@ -39,6 +40,62 @@ export default class Runtime {
 
 		console.log("Loaded save:", this.save);
 	}
+
+	eraseSave = async () => {
+		this.currentFileHandler = null;
+		this.save = Runtime.createInitialSaveData();
+	};
+
+	/**
+	 * Save a copy of the save file to the user's filesystem.
+	 */
+	saveGame = async () => {
+		// If we don't have a file handle yet, ask the user for one.
+		if (!this.currentFileHandler) {
+			this.currentFileHandler = await showSaveFilePicker({
+				id: "unnamed-project-saves",
+				startIn: "downloads",
+				suggestedName: `my-save-${new Date().toISOString()}`,
+				types: [
+					{
+						description: "A unnamed-project game save file.",
+						accept: { "application/json": [".json"] },
+					},
+				],
+			});
+		}
+
+		// Create a writable stream from the file handle and write our JSON data.
+		const writable = await this.currentFileHandler.createWritable();
+		await writable.write(JSON.stringify(this.save));
+		await writable.close();
+	};
+
+	/**
+	 * Load a save file from the file system.
+	 */
+	loadSave = async () => {
+		// Open the file picker for a single JSON file
+		const [fileHandle] = await showOpenFilePicker({
+			id: "unnamed-project-saves",
+			startIn: "downloads",
+			types: [
+				{
+					description: "A unnamed-project game save file.",
+					accept: { "application/json": [".json"] },
+				},
+			],
+			multiple: false,
+		});
+		this.currentFileHandler = fileHandle;
+
+		// Get the file from the handle
+		const file = await this.currentFileHandler.getFile();
+		// Read the file's text content
+		const content = await file.text();
+		// Parse the JSON data
+		this.save = JSON.parse(content);
+	};
 
 	/**
 	 * Get the current gameloop frame rate.
