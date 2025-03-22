@@ -37,7 +37,14 @@ export default class Desktop extends Anchor {
 	 * Open a window for a specific application.
 	 * @param {Object} application The config of the application to open.
 	 */
-	openApplication = ({ id, onInit, onTick, onBeforeTick, onAfterTick }) => {
+	openApplication = ({
+		id,
+		title,
+		onInit,
+		onTick,
+		onBeforeTick,
+		onAfterTick,
+	}) => {
 		const isOpen = this.windows.find(({ id: fid }) => fid === id);
 		if (isOpen) {
 			isOpen.bringToTop();
@@ -48,6 +55,7 @@ export default class Desktop extends Anchor {
 		const window = this.Window();
 
 		window.id = id;
+		window.title = title;
 
 		onInit && onInit(this.runtime, window);
 
@@ -58,7 +66,7 @@ export default class Desktop extends Anchor {
 		if (onBeforeTick) window.onBeforeTick = onBeforeTick;
 		if (onAfterTick) window.onAfterTick = onAfterTick;
 
-		this.element.appendChild(window.element);
+		document.body.appendChild(window.element);
 
 		window.bringToTop();
 	};

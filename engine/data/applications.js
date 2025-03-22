@@ -14,31 +14,31 @@ export default [
 						runtime.time.getEpochDisplay()
 				);
 		},
-		onTick: (runtime, window) => {},
+	},
+	{
+		id: crypto.randomUUID(),
+		title: "System",
+		icon: "\n########\n\n SYSTEM \n\n########\n##",
+		onInit: (runtime, window) => {
+			const saveButton = runtime.gui.Button("SAVE", runtime.saveGame);
+			window.element.appendChild(saveButton.element);
+
+			const loadButton = runtime.gui.Button("LOAD", runtime.loadSave);
+			window.element.appendChild(loadButton.element);
+
+			const eraseButton = runtime.gui.Button("RESET", runtime.eraseSave);
+			window.element.appendChild(eraseButton.element);
+		},
+	},
+	{
+		id: crypto.randomUUID(),
+		title: "Journal",
+		icon: "\n|¯¯¯¯¯¯|\n| NOTE |\n|      |\n| BOOK |\n|      |\n|______|",
+		onInit: (runtime, window) => {
+			const content = document.createElement("div");
+			content.innerHTML = "<p>Under construction.</p>";
+
+			window.element.appendChild(content);
+		},
 	},
 ];
-
-// // ********************************************************
-// const systemWindow = runtime.gui.desktop.Window();
-
-// systemWindow.move(512, 128);
-// systemWindow.title = "System";
-
-// const saveButton = runtime.gui.Button("SAVE", runtime.saveGame);
-// systemWindow.element.appendChild(saveButton.element);
-
-// const loadButton = runtime.gui.Button("LOAD", runtime.loadSave);
-// systemWindow.element.appendChild(loadButton.element);
-
-// const eraseButton = runtime.gui.Button("RESET", runtime.eraseSave);
-// systemWindow.element.appendChild(eraseButton.element);
-
-// document.body.appendChild(systemWindow.element);
-
-// // ********************************************************
-// const journalWindow = runtime.gui.desktop.Window();
-
-// journalWindow.move(16, 256);
-// journalWindow.title = "Journal";
-
-// document.body.appendChild(journalWindow.element);
