@@ -119,6 +119,16 @@ ol {
 	padding-left: 1rem;
 }
 
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin-bottom: 0.5rem;
+}
+
 textarea {
 	font-size: 1rem;
 
@@ -181,11 +191,7 @@ div.window {
 
 	transform-style: preserve-3d;
 
-	&:not(:focus-within):not(:focus):not(*:active) {
-		&::before {
-			opacity: 0;
-		}
-
+	&:not(.focused) {
 		&::after {
 			border-top-color: var(--border);
 		}
@@ -299,8 +305,56 @@ div.window {
 	}
 
 	div.journal-content {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		width: 100%;
+
 		> button {
 			width: 100%;
+		}
+
+		ul.journal-entry-list {
+			list-style: none;
+			padding: 0;
+			width: 100%;
+
+			max-height: 250px;
+
+			overflow-y: auto;
+
+			li {
+				width: 100%;
+
+				button {
+					width: 100%;
+
+					display: flex;
+					flex-direction: column;
+					align-items: start;
+					gap: 0;
+
+					border-top: none;
+					border-left: none;
+					border-right: none;
+
+					padding: 0.25rem;
+
+					h3,
+					p {
+						margin: 0;
+					}
+
+					h3 {
+						font-size: 1.1rem;
+						font-weight: 400;
+					}
+
+					p#start {
+						opacity: 0.5;
+					}
+				}
+			}
 		}
 	}
 }

@@ -75,13 +75,37 @@ export default [
 			window.showList = () => {
 				const display = window.resetDisplay();
 
-				const list = runtime.gui.Anchor(document.createElement("ul"));
-				list.element.className = "journal-entry-list";
-				list.element.innerHTML = `<li>Total journal entries: ${runtime.save.player.journal.length}</li>`;
+				display.innerHTML = `<p>Total journal entries: ${runtime.save.player.journal.length}</p>`;
 
-				display.appendChild(list.element);
+				if (runtime.save.player.journal.length > 0) {
+					const list = runtime.gui.Anchor(
+						document.createElement("ul")
+					);
+					list.element.className = "journal-entry-list";
 
-				display.appendChild(
+					for (let i in runtime.save.player.journal) {
+						const entry = runtime.save.player.journal[i];
+
+						const entryDisplay = document.createElement("li");
+
+						const button = document.createElement("button");
+						button.type = "button";
+
+						button.innerHTML = `
+                            <h3>Entry ${String(+i + 1).padStart(4, "0")}</h3>
+                            <p id="date">${entry.time}</p>
+                            <p id="start">${entry.data.slice(0, 16) + "..."}</p>
+                        `;
+
+						entryDisplay.appendChild(button);
+
+						list.element.prepend(entryDisplay);
+					}
+
+					display.prepend(list.element);
+				}
+
+				display.append(
 					runtime.gui.Button("NEW ENTRY", () => {
 						window.showEditor();
 					}).element

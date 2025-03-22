@@ -43,15 +43,18 @@ export default class Window extends Anchor {
 		this.desktop.windows.splice(this.desktop.windows.indexOf(this), 1);
 		this.desktop.windows.unshift(this);
 
-		for (const i in this.desktop.windows) {
+		for (let i in this.desktop.windows) {
 			const window = this.desktop.windows[i];
 
+			window.element.classList.toggle("focused", window === this);
 			window.element.style.zIndex = this.desktop.windows.length - +i + 1;
 		}
 	};
 
 	beginDrag = ({ clientX, clientY }) => {
 		this.inDrag = true;
+
+		this.element.classList.toggle("in-drag", true);
 
 		const { x, y } = this.element.getBoundingClientRect();
 
@@ -60,6 +63,8 @@ export default class Window extends Anchor {
 
 	endDrag = (e) => {
 		this.inDrag = false;
+
+		this.element.classList.toggle("in-drag", false);
 	};
 
 	mouseMove = ({ clientX, clientY }) => {
@@ -78,8 +83,6 @@ export default class Window extends Anchor {
 	 */
 	__initializeElements() {
 		this.element.className = "window";
-
-		this.element.setAttribute("tabIndex", 0);
 
 		const header = document.createElement("header");
 		header.className = "window-header";

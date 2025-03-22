@@ -45,6 +45,8 @@ export default class Runtime {
 	 * Reset game state to "unload"/"delete" current save. Does not delete actual file.
 	 */
 	eraseSave = async () => {
+		this.gui.reset();
+
 		this.currentFileHandler = null;
 		this.save = Runtime.createInitialSaveData();
 	};
