@@ -39,6 +39,15 @@ export default class Window extends Anchor {
 	 */
 	bringToTop = () => {
 		this.element.focus();
+
+		this.desktop.windows.splice(this.desktop.windows.indexOf(this), 1);
+		this.desktop.windows.unshift(this);
+
+		for (const i in this.desktop.windows) {
+			const window = this.desktop.windows[i];
+
+			window.element.style.zIndex = this.desktop.windows.length - +i + 1;
+		}
 	};
 
 	beginDrag = ({ clientX, clientY }) => {
@@ -79,6 +88,7 @@ export default class Window extends Anchor {
 		dragArea.className = "drag-area";
 		header.appendChild(dragArea);
 
+		this.element.addEventListener("mousedown", this.bringToTop);
 		window.addEventListener("mousemove", this.mouseMove);
 		window.addEventListener("blur", this.mouseMove);
 		window.addEventListener("mouseup", this.endDrag);
@@ -112,6 +122,7 @@ export default class Window extends Anchor {
 			(window) => window !== this
 		);
 
+		this.element.removeEventListener("mousedown", this.bringToTop);
 		window.removeEventListener("mousemove", this.mouseMove);
 		window.removeEventListener("blur", this.mouseMove);
 		window.removeEventListener("mouseup", this.endDrag);

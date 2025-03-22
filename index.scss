@@ -156,6 +156,8 @@ div.window {
 	gap: 0.25rem;
 	flex-wrap: wrap;
 
+	transform-style: preserve-3d;
+
 	&:not(:focus-within):not(:focus):not(*:active) {
 		&::before {
 			opacity: 0;
@@ -260,7 +262,7 @@ div.window {
 
 		content: "";
 
-		z-index: -1;
+		transform: translateZ(-1px);
 		position: absolute;
 		display: block;
 

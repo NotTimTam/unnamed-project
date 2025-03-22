@@ -135,6 +135,7 @@ div.window {
   display: flex;
   gap: 0.25rem;
   flex-wrap: wrap;
+  transform-style: preserve-3d;
 }
 div.window:not(:focus-within):not(:focus):not(*:active)::before {
   opacity: 0;
@@ -201,7 +202,7 @@ div.window::before {
   background-image: var(--texture);
   background-color: var(--background);
   content: "";
-  z-index: -1;
+  transform: translateZ(-1px);
   position: absolute;
   display: block;
   width: 100%;
