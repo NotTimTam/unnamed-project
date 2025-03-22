@@ -65,7 +65,7 @@ export default [
 				display.appendChild(
 					runtime.gui.Button("SAVE", () => {
 						runtime.save.player.journal.push({
-							data: input.value,
+							data: input.value.trim(),
 							time: runtime.save.time,
 						});
 
@@ -99,7 +99,9 @@ export default [
 								undefined,
 								entry.time
 							).getDateTimeDisplay(true)}</p>
-                            <p id="start">${entry.data.slice(0, 16) + "..."}</p>
+                            <p id="start">${
+								entry.data.trim().slice(0, 16).trim() + "..."
+							}</p>
                         `;
 
 						entryDisplay.appendChild(button);
