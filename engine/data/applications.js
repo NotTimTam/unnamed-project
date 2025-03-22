@@ -20,7 +20,7 @@ export default [
 	{
 		id: crypto.randomUUID(),
 		title: "System",
-		icon: "\n########\n\n SYSTEM \n\n########\n##",
+		icon: "\n########\n\n#SYSTEM#\n\n########\n##",
 		onInit: (runtime, window) => {
 			const saveButton = runtime.gui.Button("SAVE", runtime.saveGame);
 			window.element.appendChild(saveButton.element);
@@ -183,6 +183,22 @@ export default [
 			};
 
 			window.showList();
+		},
+	},
+	{
+		id: crypto.randomUUID(),
+		title: "Debug Save",
+		icon: "_______\n\n| |__| |\n\n|  ()  |\n\n|______|",
+		onInit: (runtime, window) => {
+			window.saveDisplay = document.createElement("code");
+			window.element.appendChild(window.saveDisplay);
+			window.saveDisplay.style = "max-width: 320px; overflow: auto;";
+		},
+		onTick: (runtime, window) => {
+			let saveDisplay = JSON.parse(JSON.stringify(runtime.save));
+			saveDisplay.player.journal = `[ ${saveDisplay.player.journal.length} entries ]`;
+
+			window.saveDisplay.innerHTML = JSON.stringify(saveDisplay);
 		},
 	},
 ];

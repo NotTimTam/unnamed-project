@@ -62,34 +62,16 @@ html body {
 }
 html body main.desktop {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(12, 1fr);
+  grid-template-columns: auto;
+  justify-content: start;
+  align-content: start;
   padding: 1rem;
   gap: 1rem;
 }
 @media (max-width: 768px) {
   html body main.desktop {
-    grid-template-columns: repeat(8, 1fr);
     padding: 0.5rem;
     gap: 0.5rem;
-  }
-}
-@media (max-height: 768px) {
-  html body main.desktop {
-    grid-template-rows: repeat(8, 1fr);
-  }
-}
-@media (max-height: 320px) {
-  html body main.desktop {
-    grid-template-rows: unset;
-  }
-}
-@media (max-width: 320px) {
-  html body main.desktop {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-start;
   }
 }
 html body main.desktop > button.application-button {
@@ -109,6 +91,10 @@ html body main.desktop > button.application-button > span.desktop-icon {
   font-size: 0.75rem;
   line-height: 0.4rem;
   font-weight: 800;
+}
+html body main.desktop > button.application-button > span.button-pretty {
+  word-break: keep-all;
+  white-space: pre;
 }
 
 ul,
