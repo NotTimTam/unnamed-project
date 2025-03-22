@@ -5,6 +5,9 @@ import Time from "./Time.js";
  * Manages gameloop and houses subsystems.
  */
 export default class Runtime {
+	/** The interval at which the game will be automatically saved. */
+	static autoSaveInterval = 30000;
+
 	/**
 	 * Create an empty save file.
 	 */
@@ -20,6 +23,15 @@ export default class Runtime {
 	}
 
 	/**
+	 * Get save data from local storage.
+	 */
+	static getLocalStorageSave() {
+		const save = localStorage.getItem("unnamed-project-save");
+
+		if (save) return JSON.parse(save);
+	}
+
+	/**
 	 * Create a new `Runtime` instance.
 	 * @param {Object} save The loaded save to use.
 	 */
@@ -31,8 +43,7 @@ export default class Runtime {
 
 		this.gui = new GUI(this);
 
-		if (!save)
-			throw new Error("Runtime constructor not provided a save file.");
+		if (!save) save = Runtime.createInitialSaveData();
 
 		this.save = save;
 
@@ -49,6 +60,22 @@ export default class Runtime {
 
 		this.currentFileHandler = null;
 		this.save = Runtime.createInitialSaveData();
+	};
+
+	/**
+	 * Quickly save the game to localstorage.
+	 */
+	quickSave = () => {
+		localStorage.setItem("unnamed-project-save", JSON.stringify(this.save));
+	};
+
+	/**
+	 * Quickly load a save from localstorage.
+	 */
+	quickLoad = () => {
+		const save = Runtime.getLocalStorageSave();
+
+		if (save) this.save = save;
 	};
 
 	/**
@@ -141,9 +168,17 @@ export default class Runtime {
 		for (const construct of this.constructs)
 			construct.onTick && construct.onTick(this);
 	};
-	__onAfterTick = () => {
+	__onAfterTick = (time) => {
 		for (const construct of this.constructs)
 			construct.onAfterTick && construct.onAfterTick(this);
+
+		if (
+			!this.hasOwnProperty("lastAutoSave") ||
+			time - this.lastAutoSave > Runtime.autoSaveInterval
+		) {
+			this.lastAutoSave = time;
+			this.quickSave();
+		}
 	};
 
 	__onAnimationFrame = (time) => {
@@ -151,7 +186,7 @@ export default class Runtime {
 
 		this.__onBeforeTick(time);
 		this.__onTick();
-		this.__onAfterTick();
+		this.__onAfterTick(time);
 
 		requestAnimationFrame(this.__onAnimationFrame);
 	};

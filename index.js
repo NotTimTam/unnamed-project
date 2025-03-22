@@ -1,8 +1,6 @@
 import Runtime from "./engine/core/Runtime.js";
 
-const save = Runtime.createInitialSaveData();
-
-const runtime = new Runtime(save);
+const runtime = new Runtime(Runtime.getLocalStorageSave());
 // window.runtime = runtime;
 
 runtime.start();
