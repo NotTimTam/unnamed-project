@@ -60,16 +60,21 @@ button {
 
 div.window {
 	position: absolute;
-	top: 3rem;
-	left: 3rem;
+	top: 0;
+	left: 0;
 
 	max-width: 100vw;
 	max-height: 100vh;
 
 	padding: 1.5rem 1.5rem;
-	margin: 0 0.5rem 0.5rem 0;
 
 	background-color: var(--background-2);
+
+	&:has(> header.window-header > div.drag-area:active) {
+		*:not(> header.window-header > div.drag-area:active) {
+			pointer-events: none;
+		}
+	}
 
 	> header.window-header {
 		position: absolute;
@@ -87,14 +92,23 @@ div.window {
 
 		z-index: 2;
 
-		> button.close {
-			margin-left: auto;
+		> div.drag-area {
+			height: 100%;
+
+			cursor: grab;
+
+			flex-grow: 2;
+
+			&:active {
+				cursor: grabbing;
+			}
 		}
 	}
 
 	&::after {
 		content: "";
 		border: 3px double var(--border);
+		border-top-color: var(--yellow);
 
 		position: absolute;
 

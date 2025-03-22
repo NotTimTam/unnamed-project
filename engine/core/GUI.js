@@ -70,6 +70,29 @@ export default class GUI extends Construct {
 			this.__initializeElements();
 		}
 
+		beginDrag = ({ clientX, clientY }) => {
+			this.inDrag = true;
+
+			const { x, y } = this.element.getBoundingClientRect();
+
+			this.offset = [clientX - x, clientY - y];
+		};
+
+		endDrag = (e) => {
+			this.inDrag = false;
+		};
+
+		mouseMove = ({ clientX, clientY }) => {
+			if (!this.inDrag) return;
+
+			const { width, height } = this.element.getBoundingClientRect();
+
+			this.move(
+				Math.min(clientX - this.offset[0], window.innerWidth - width),
+				Math.min(clientY - this.offset[1], window.innerHeight - height)
+			);
+		};
+
 		/**
 		 * **Internal method.** Initializes a window's elements.
 		 */
@@ -78,6 +101,19 @@ export default class GUI extends Construct {
 
 			const header = document.createElement("header");
 			header.className = "window-header";
+
+			const dragArea = document.createElement("div");
+			dragArea.className = "drag-area";
+			header.appendChild(dragArea);
+
+			window.addEventListener("mousemove", this.mouseMove);
+			window.addEventListener("blur", this.mouseMove);
+			window.addEventListener("mouseup", this.endDrag);
+			dragArea.addEventListener("mousedown", this.beginDrag);
+
+			dragArea.onmousedown = () => {
+				this.inDrag = true;
+			};
 
 			const button = document.createElement("button");
 			button.type = "button";
@@ -98,8 +134,24 @@ export default class GUI extends Construct {
 				(window) => window !== this
 			);
 
+			window.removeEventListener("mousemove", this.mouseMove);
+			window.removeEventListener("blur", this.mouseMove);
+			window.removeEventListener("mouseup", this.endDrag);
+
 			this.destroy();
 		}
+
+		/**
+		 * Move the window.
+		 * @param {number} x The new x-coordinate for the window.
+		 * @param {number} y The new y-coordinate for the window.
+		 */
+		move = (x, y) => {
+			this.element.style.top =
+				Math.max(Math.min(y, window.innerHeight - 16), 0) + "px";
+			this.element.style.left =
+				Math.max(Math.min(x, window.innerWidth - 16), 0) + "px";
+		};
 	};
 
 	/**

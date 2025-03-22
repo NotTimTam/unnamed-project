@@ -9,6 +9,8 @@ runtime.start();
 
 const window = runtime.gui.Window();
 
+window.move(16, 16);
+
 document.body.appendChild(window.element);
 
 const text = runtime.gui.Text("Hello, world!");
