@@ -56,8 +56,6 @@ export default [
 				const display = window.resetDisplay();
 
 				const input = document.createElement("textarea");
-				input.cols = "32";
-				input.rows = "16";
 				input.placeholder = "Begin writing here...";
 
 				display.appendChild(input);
@@ -69,6 +67,22 @@ export default [
 							time: runtime.save.time,
 						});
 
+						window.showList();
+					}).element
+				);
+			};
+
+			window.showReader = (content) => {
+				const display = window.resetDisplay();
+
+				const contentDisplay = document.createElement("p");
+				contentDisplay.innerHTML = content;
+				contentDisplay.className = "journal-entry-content";
+
+				display.appendChild(contentDisplay);
+
+				display.appendChild(
+					runtime.gui.Button("CLOSE", () => {
 						window.showList();
 					}).element
 				);
@@ -93,16 +107,23 @@ export default [
 						const button = document.createElement("button");
 						button.type = "button";
 
+						const timeDisplay = new Time(
+							undefined,
+							entry.time
+						).getDateTimeDisplay(true);
+
 						button.innerHTML = `
                             <h3>Entry ${String(+i + 1).padStart(4, "0")}</h3>
-                            <p id="date">${new Time(
-								undefined,
-								entry.time
-							).getDateTimeDisplay(true)}</p>
+                            <p id="date">${timeDisplay}</p>
                             <p id="start">${
 								entry.data.trim().slice(0, 16).trim() + "..."
 							}</p>
                         `;
+
+						button.onclick = () =>
+							window.showReader(
+								timeDisplay + "<br><br>" + entry.data
+							);
 
 						entryDisplay.appendChild(button);
 

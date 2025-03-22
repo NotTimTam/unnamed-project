@@ -241,15 +241,25 @@ div.window div.journal-content {
   flex-direction: column;
   gap: 0.25rem;
   width: 100%;
+  min-width: 256px;
 }
 div.window div.journal-content > button {
   width: 100%;
+}
+div.window div.journal-content textarea {
+  width: 256px;
+  height: 256px;
+}
+div.window div.journal-content p.journal-entry-content {
+  max-height: 256px;
+  max-width: 256px;
+  overflow-y: auto;
 }
 div.window div.journal-content ul.journal-entry-list {
   list-style: none;
   padding: 0;
   width: 100%;
-  max-height: 250px;
+  max-height: 256px;
   overflow-y: auto;
 }
 div.window div.journal-content ul.journal-entry-list li {
