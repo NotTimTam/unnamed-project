@@ -296,7 +296,7 @@ export default class Time {
 			  ).padStart(2, "0")}-${String(this.getDate()).padStart(2, "0")}`
 			: `${this.getMonthName()} ${this.getOrdinalSuffix(
 					this.getDate()
-			  )}, Year ${this.getTotalYears()}`;
+			  )}, ${this.getTotalYears()} AE`;
 
 	/**
 	 * @param {boolean} compact Whether to make the date-time display compact.
