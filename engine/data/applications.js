@@ -1,3 +1,5 @@
+import Time from "../core/Time.js";
+
 export default [
 	{
 		id: crypto.randomUUID(),
@@ -93,7 +95,10 @@ export default [
 
 						button.innerHTML = `
                             <h3>Entry ${String(+i + 1).padStart(4, "0")}</h3>
-                            <p id="date">${entry.time}</p>
+                            <p id="date">${new Time(
+								undefined,
+								entry.time
+							).getDateTimeDisplay(true)}</p>
                             <p id="start">${entry.data.slice(0, 16) + "..."}</p>
                         `;
 

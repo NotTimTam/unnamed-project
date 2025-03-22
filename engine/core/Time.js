@@ -70,10 +70,12 @@ export default class Time {
 
 	/**
 	 * Create a new Time instance.
-	 * @param {Runtime} runtime - The runtime instance.
+	 * @param {Runtime} runtime The runtime instance.
+	 * @param {number} timestamp A timestamp override to use instead of the one in the save file.
 	 */
-	constructor(runtime) {
+	constructor(runtime, timestamp) {
 		this.runtime = runtime;
+		this.timestamp = timestamp;
 	}
 
 	/**
@@ -81,7 +83,11 @@ export default class Time {
 	 * @returns {number} The raw time in milliseconds.
 	 */
 	get rawTime() {
-		return this.runtime.save ? this.runtime.save.time : 0;
+		if (this.timestamp && typeof this.timestamp === "number")
+			return this.timestamp;
+		else if (this.runtime && this.runtime.save)
+			return +this.runtime.save.time;
+		else return 0;
 	}
 
 	/**
