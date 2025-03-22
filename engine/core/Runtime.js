@@ -129,6 +129,8 @@ export default class Runtime {
 		const content = await file.text();
 		// Parse the JSON data
 		this.save = JSON.parse(content);
+
+		this.quickSave();
 	};
 
 	/**
