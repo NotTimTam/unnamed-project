@@ -78,6 +78,8 @@ export default class Runtime {
 	 * Load a save file from the file system.
 	 */
 	loadSave = async () => {
+		this.gui.reset();
+
 		// Open the file picker for a single JSON file
 		const [fileHandle] = await showOpenFilePicker({
 			id: "unnamed-project-saves",
@@ -131,23 +133,23 @@ export default class Runtime {
 		this.save.time += this.dt; // Record the current time.
 
 		for (const construct of this.constructs)
-			construct.onBeforeTick && construct.onBeforeTick(time);
+			construct.onBeforeTick && construct.onBeforeTick(this);
 	};
-	__onTick = (time) => {
+	__onTick = () => {
 		for (const construct of this.constructs)
-			construct.onTick && construct.onTick(time);
+			construct.onTick && construct.onTick(this);
 	};
-	__onAfterTick = (time) => {
+	__onAfterTick = () => {
 		for (const construct of this.constructs)
-			construct.onAfterTick && construct.onAfterTick(time);
+			construct.onAfterTick && construct.onAfterTick(this);
 	};
 
 	__onAnimationFrame = (time) => {
 		if (!this.active) return;
 
 		this.__onBeforeTick(time);
-		this.__onTick(time);
-		this.__onAfterTick(time);
+		this.__onTick();
+		this.__onAfterTick();
 
 		requestAnimationFrame(this.__onAnimationFrame);
 	};

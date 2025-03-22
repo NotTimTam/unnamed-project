@@ -36,9 +36,59 @@ export default [
 		icon: "\n|¯¯¯¯¯¯|\n| NOTE |\n|      |\n| BOOK |\n|      |\n|______|",
 		onInit: (runtime, window) => {
 			const content = document.createElement("div");
-			content.innerHTML = "<p>Under construction.</p>";
+			content.className = "journal-content";
 
 			window.element.appendChild(content);
+
+			window.resetDisplay = () => {
+				const display = window.element.querySelector(
+					"div.journal-content"
+				);
+
+				display.innerHTML = null;
+
+				return display;
+			};
+
+			window.showEditor = () => {
+				const display = window.resetDisplay();
+
+				const input = document.createElement("textarea");
+				input.cols = "32";
+				input.rows = "16";
+				input.placeholder = "Begin writing here...";
+
+				display.appendChild(input);
+
+				display.appendChild(
+					runtime.gui.Button("SAVE", () => {
+						runtime.save.player.journal.push({
+							data: input.value,
+							time: runtime.save.time,
+						});
+
+						window.showList();
+					}).element
+				);
+			};
+
+			window.showList = () => {
+				const display = window.resetDisplay();
+
+				const list = runtime.gui.Anchor(document.createElement("ul"));
+				list.element.className = "journal-entry-list";
+				list.element.innerHTML = `<li>Total journal entries: ${runtime.save.player.journal.length}</li>`;
+
+				display.appendChild(list.element);
+
+				display.appendChild(
+					runtime.gui.Button("NEW ENTRY", () => {
+						window.showEditor();
+					}).element
+				);
+			};
+
+			window.showList();
 		},
 	},
 ];

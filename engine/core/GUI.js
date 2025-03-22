@@ -39,4 +39,11 @@ export default class GUI extends Construct {
 		 */
 		this.Button = (text, event) => new Button(text, event, runtime);
 	}
+
+	/**
+	 * Reset the GUI display to default.
+	 */
+	reset() {
+		this.desktop.reset();
+	}
 }

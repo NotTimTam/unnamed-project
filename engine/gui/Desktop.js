@@ -34,6 +34,13 @@ export default class Desktop extends Anchor {
 	}
 
 	/**
+	 * Reset the desktop display to defaults.
+	 */
+	reset() {
+		for (const window of this.windows) window.close();
+	}
+
+	/**
 	 * Open a window for a specific application.
 	 * @param {Object} application The config of the application to open.
 	 */
