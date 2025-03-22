@@ -264,6 +264,7 @@ div.window div.journal-content p.journal-entry-content {
   max-height: 256px;
   max-width: 256px;
   word-wrap: break-word;
+  white-space: pre-line;
   overflow-y: auto;
   overflow-x: hidden;
 }
