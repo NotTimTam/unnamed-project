@@ -30,13 +30,13 @@ const systemWindow = runtime.gui.Window();
 systemWindow.move(512, 128);
 systemWindow.title = "System";
 
-const saveButton = runtime.gui.Button("Save", runtime.saveGame);
+const saveButton = runtime.gui.Button("SAVE", runtime.saveGame);
 systemWindow.element.appendChild(saveButton.element);
 
-const loadButton = runtime.gui.Button("Load", runtime.loadSave);
+const loadButton = runtime.gui.Button("LOAD", runtime.loadSave);
 systemWindow.element.appendChild(loadButton.element);
 
-const eraseButton = runtime.gui.Button("Reset", runtime.eraseSave);
+const eraseButton = runtime.gui.Button("RESET", runtime.eraseSave);
 systemWindow.element.appendChild(eraseButton.element);
 
 document.body.appendChild(systemWindow.element);

@@ -163,7 +163,7 @@ export default class GUI extends Construct {
 			button.type = "button";
 			button.className = "close";
 			button.title = "Close window.";
-			button.innerText = "[x]";
+			button.innerText = "X";
 			button.onclick = () => this.close();
 			header.appendChild(button);
 
