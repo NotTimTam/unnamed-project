@@ -11,7 +11,7 @@ export default class Button extends Anchor {
 	 */
 	constructor(text, event, runtime) {
 		const element = document.createElement("button");
-		element.innerText = text;
+		element.innerHTML = `<span class="button-pretty>${text}</span>`;
 		element.onclick = event;
 
 		super(element, runtime);

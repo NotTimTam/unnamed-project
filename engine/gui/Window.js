@@ -34,6 +34,13 @@ export default class Window extends Anchor {
 		).innerText = n;
 	}
 
+	/**
+	 * Bring this window to the forefront of the z-order.
+	 */
+	bringToTop = () => {
+		this.element.focus();
+	};
+
 	beginDrag = ({ clientX, clientY }) => {
 		this.inDrag = true;
 
