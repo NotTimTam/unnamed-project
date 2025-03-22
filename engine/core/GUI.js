@@ -56,6 +56,25 @@ export default class GUI extends Construct {
 	};
 
 	/**
+	 * Displays a button on the screen.
+	 */
+	static Button = class extends GUI.Anchor {
+		/**
+		 * Create a new `Button` instance.
+		 * @param {string} text The initial value to display for the button text.
+		 * @param {function} event The event to run when the button is clicked.
+		 * @param {Runtime} runtime The runtime to use.
+		 */
+		constructor(text, event, runtime) {
+			const element = document.createElement("button");
+			element.innerText = text;
+			element.onclick = event;
+
+			super(element, runtime);
+		}
+	};
+
+	/**
 	 * A desktop window that displays content.
 	 */
 	static Window = class Window extends GUI.Anchor {
@@ -201,6 +220,14 @@ export default class GUI extends Construct {
 		 * @returns {GUI.Text} The new `Text` instance.
 		 */
 		this.Text = (initialValue) => new GUI.Text(initialValue, runtime);
+
+		/**
+		 * Create a new `Window` instance.
+		 * @param {string} text The initial value to display for the button text.
+		 * @param {function} event The event to run when the button is clicked.
+		 * @returns {GUI.Window} The new `Window` instance.
+		 */
+		this.Button = (text, event) => new GUI.Button(text, event, runtime);
 
 		/**
 		 * Create a new `Window` instance.
