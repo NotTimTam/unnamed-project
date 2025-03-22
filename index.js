@@ -7,7 +7,7 @@ const runtime = new Runtime(save);
 
 runtime.start();
 
-const window = runtime.gui.Window();
+const window = runtime.gui.desktop.Window();
 
 window.move(16, 16);
 window.title = "Calendar";
@@ -25,7 +25,7 @@ text.onTick = () =>
 	);
 
 // ********************************************************
-const systemWindow = runtime.gui.Window();
+const systemWindow = runtime.gui.desktop.Window();
 
 systemWindow.move(512, 128);
 systemWindow.title = "System";
@@ -40,6 +40,14 @@ const eraseButton = runtime.gui.Button("RESET", runtime.eraseSave);
 systemWindow.element.appendChild(eraseButton.element);
 
 document.body.appendChild(systemWindow.element);
+
+// ********************************************************
+const journalWindow = runtime.gui.desktop.Window();
+
+journalWindow.move(16, 256);
+journalWindow.title = "Journal";
+
+document.body.appendChild(journalWindow.element);
 
 /**
  * Build the buisness of an economy.
