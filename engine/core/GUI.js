@@ -76,11 +76,18 @@ export default class GUI extends Construct {
 		__initializeElements() {
 			this.element.className = "window";
 
-			this.element.innerHTML = `
-				<header class="window-header">
-					<button type="button" class="close">[x]</button>
-				</header>
-			`;
+			const header = document.createElement("header");
+			header.className = "window-header";
+
+			const button = document.createElement("button");
+			button.type = "button";
+			button.className = "close";
+			button.title = "Close window.";
+			button.innerText = "[x]";
+			button.onclick = () => this.close();
+			header.appendChild(button);
+
+			this.element.prepend(header);
 		}
 
 		/**
