@@ -116,7 +116,6 @@ export default [
 						);
 
 						if (comf) {
-							console.log(id);
 							runtime.save.player.journal =
 								runtime.save.player.journal.filter(
 									(_, i) => +i !== +id
