@@ -90,6 +90,9 @@ export default class Desktop extends Anchor {
 			applicationButton.ondblclick = () =>
 				this.openApplication(application);
 
+			applicationButton.onkeydown = ({ key }) =>
+				key === "Enter" && this.openApplication(application);
+
 			this.element.appendChild(applicationButton);
 		}
 	}
