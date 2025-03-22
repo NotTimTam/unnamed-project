@@ -240,11 +240,21 @@ div.window div.journal-content {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  width: 100%;
-  min-width: 256px;
+  max-width: 100%;
+  width: 256px;
+  overflow: hidden;
 }
 div.window div.journal-content > button {
   width: 100%;
+}
+div.window div.journal-content div.button-group {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+div.window div.journal-content div.button-group button {
+  flex-grow: 2;
 }
 div.window div.journal-content textarea {
   width: 256px;

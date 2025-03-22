@@ -308,11 +308,23 @@ div.window {
 		display: flex;
 		flex-direction: column;
 		gap: 0.25rem;
-		width: 100%;
-		min-width: 256px;
+		max-width: 100%;
+		width: 256px;
+		overflow: hidden;
 
 		> button {
 			width: 100%;
+		}
+
+		div.button-group {
+			display: flex;
+			flex-direction: row;
+			gap: 0.25rem;
+			flex-wrap: wrap;
+
+			button {
+				flex-grow: 2;
+			}
 		}
 
 		textarea {

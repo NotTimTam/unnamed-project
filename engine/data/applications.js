@@ -60,19 +60,38 @@ export default [
 
 				display.appendChild(input);
 
-				display.appendChild(
-					runtime.gui.Button("SAVE", () => {
-						runtime.save.player.journal.push({
-							data: input.value.trim(),
-							time: runtime.save.time,
-						});
+				const buttonGroup = document.createElement("div");
+				buttonGroup.className = "button-group";
 
-						window.showList();
+				buttonGroup.appendChild(
+					runtime.gui.Button("SAVE", () => {
+						if (input.value.trim() === "")
+							alert("You cannot save an empty journal entry.");
+						else {
+							runtime.save.player.journal.push({
+								data: input.value.trim(),
+								time: runtime.save.time,
+							});
+
+							window.showList();
+						}
 					}).element
 				);
+
+				buttonGroup.appendChild(
+					runtime.gui.Button("CANCEL", () => {
+						const comf = confirm(
+							"Are you sure you want to close without saving entry?"
+						);
+
+						if (comf) window.showList();
+					}).element
+				);
+
+				display.appendChild(buttonGroup);
 			};
 
-			window.showReader = (content) => {
+			window.showReader = (id, content) => {
 				const display = window.resetDisplay();
 
 				const contentDisplay = document.createElement("p");
@@ -81,11 +100,33 @@ export default [
 
 				display.appendChild(contentDisplay);
 
-				display.appendChild(
+				const buttonGroup = document.createElement("div");
+				buttonGroup.className = "button-group";
+
+				buttonGroup.appendChild(
 					runtime.gui.Button("CLOSE", () => {
 						window.showList();
 					}).element
 				);
+
+				buttonGroup.appendChild(
+					runtime.gui.Button("DELETE", () => {
+						const comf = confirm(
+							"Are you sure you want to permanently delete this entry?"
+						);
+
+						if (comf) {
+							console.log(id);
+							runtime.save.player.journal =
+								runtime.save.player.journal.filter(
+									(_, i) => +i !== +id
+								);
+							window.showList();
+						}
+					}).element
+				);
+
+				display.appendChild(buttonGroup);
 			};
 
 			window.showList = () => {
@@ -116,12 +157,14 @@ export default [
                             <h3>Entry ${String(+i + 1).padStart(4, "0")}</h3>
                             <p id="date">${timeDisplay}</p>
                             <p id="start">${
-								entry.data.trim().slice(0, 16).trim() + "..."
+								entry.data.trim().slice(0, 16).trim() +
+								(entry.data.length > 16 ? "..." : "")
 							}</p>
                         `;
 
 						button.onclick = () =>
 							window.showReader(
+								i,
 								timeDisplay + "<br><br>" + entry.data
 							);
 
