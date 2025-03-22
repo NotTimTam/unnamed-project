@@ -136,11 +136,11 @@ div.window {
   gap: 0.25rem;
   flex-wrap: wrap;
 }
-div.window:not(:focus-within):not(:focus):not(*:active) {
-  opacity: 0.75;
-}
 div.window:not(:focus-within):not(:focus):not(*:active)::before {
   opacity: 0;
+}
+div.window:not(:focus-within):not(:focus):not(*:active)::after {
+  border-top-color: var(--border);
 }
 div.window:has(> header.window-header > div.drag-area:active) > header.window-header > h2.header-title {
   background-color: var(--orange);

@@ -157,10 +157,12 @@ div.window {
 	flex-wrap: wrap;
 
 	&:not(:focus-within):not(:focus):not(*:active) {
-		opacity: 0.75;
-
 		&::before {
 			opacity: 0;
+		}
+
+		&::after {
+			border-top-color: var(--border);
 		}
 	}
 
