@@ -7,8 +7,13 @@ export default class Construct {
 	 * @param {Runtime} runtime The runtime this construct will use.
 	 */
 	constructor(runtime) {
+		if (!runtime)
+			throw new Error("No runtime provided to Construct constructor.");
+
 		this.runtime = runtime;
 		runtime.constructs.push(this);
+
+		this.id = crypto.randomUUID();
 	}
 
 	/**

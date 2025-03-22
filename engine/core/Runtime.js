@@ -1,5 +1,5 @@
+import GUI from "./GUI.js";
 import Time from "./Time.js";
-import WindowManager from "./WindowManager.js";
 
 /**
  * Manages gameloop and houses subsystems.
@@ -28,7 +28,7 @@ export default class Runtime {
 
 		this.active = false;
 
-		this.windowManager = new WindowManager(this);
+		this.gui = new GUI(this);
 
 		if (!save)
 			throw new Error("Runtime constructor not provided a save file.");

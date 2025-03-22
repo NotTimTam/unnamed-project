@@ -1,25 +1,28 @@
-import { Text } from "./engine/core/GUIAnchor.js";
 import Runtime from "./engine/core/Runtime.js";
 
 const save = Runtime.createInitialSaveData();
 
-window.runtime = new Runtime(save);
+const runtime = new Runtime(save);
+// window.runtime = runtime;
 
-window.runtime.start();
+runtime.start();
 
-const text = new Text("Hello, world!");
-document.body.appendChild(text.element);
-text.element.style.fontSize = "32px";
+const window = runtime.gui.Window();
+
+document.body.appendChild(window.element);
+
+const text = runtime.gui.Text("Hello, world!");
+window.element.appendChild(text.element);
 
 text.onTick = () =>
 	text.updateText(
-		window.runtime.time.getDateTimeDisplay(false) +
+		runtime.time.getDateTimeDisplay(false) +
 			"\n" +
-			window.runtime.time.getEpochDisplay()
+			runtime.time.getEpochDisplay()
 	);
 
 /**
- * Build the buisiness of an economy.
+ * Build the buisness of an economy.
  * Such as "how to make a pencil", every
  * component and everything that leads to that component must be done
  * maybe work is done by hand initially.
