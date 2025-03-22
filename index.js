@@ -1,4 +1,4 @@
-import Runtime from "./engine/core/Runtime.js";
+import Runtime from "./scripts/core/Runtime.js";
 
 const runtime = new Runtime(Runtime.getLocalStorageSave());
 // window.runtime = runtime;
