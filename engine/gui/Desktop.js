@@ -28,6 +28,10 @@ export default class Desktop extends Anchor {
 			const window = new Window(this);
 
 			this.windows.push(window);
+			window.move(
+				16 + this.windows.length * 32,
+				16 + this.windows.length * 32
+			);
 
 			return window;
 		};
