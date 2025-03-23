@@ -8,15 +8,13 @@ export default class Window extends Anchor {
 	 * Create a new `Window` instance.
 	 * @param {Desktop} desktop The desktop to use.
 	 * @param {boolean} minimizable Whether this window can be minimized.
-	 * @param {boolean} maximizable Whether this window can be maximized.
 	 */
-	constructor(desktop, minimizable = true, maximizable = true) {
+	constructor(desktop, minimizable = true) {
 		super(document.createElement("div"), desktop.runtime);
 		this.desktop = desktop;
 		this.gui = desktop.gui;
 
 		this.minimizable = minimizable;
-		this.maximizable = maximizable;
 
 		this.initialized = desktop.runtime.lft;
 
