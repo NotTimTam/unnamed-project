@@ -5,6 +5,7 @@ export default [
 		id: crypto.randomUUID(),
 		title: "Calendar",
 		icon: "________\n\n| M T W |\n| _ _ _ |\n| _ _ _ |\n| _ _ _ |\n|_______|",
+		minimizable: true,
 		onInit: (runtime, window) => {
 			const text = runtime.gui.Text("Hello, world!");
 			window.element.appendChild(text.element);
@@ -26,6 +27,7 @@ export default [
 		id: crypto.randomUUID(),
 		title: "System",
 		icon: "\n########\n\n#SYSTEM#\n\n########\n##",
+		minimizable: true,
 		onInit: (runtime, window) => {
 			const saveButton = runtime.gui.Button("SAVE", runtime.saveGame);
 			window.element.appendChild(saveButton.element);
@@ -41,6 +43,7 @@ export default [
 		id: crypto.randomUUID(),
 		title: "Journal",
 		icon: "\n|¯¯¯¯¯¯|\n| NOTE |\n|      |\n| BOOK |\n|      |\n|______|",
+		minimizable: true,
 		onInit: (runtime, window) => {
 			const content = document.createElement("div");
 			content.className = "journal-content";
@@ -194,6 +197,7 @@ export default [
 		id: crypto.randomUUID(),
 		title: "Debug Save",
 		icon: "_______\n\n| |__| |\n\n|  ()  |\n\n|______|",
+		minimizable: false,
 		onInit: (runtime, window) => {
 			window.saveDisplay = document.createElement("code");
 			window.element.appendChild(window.saveDisplay);

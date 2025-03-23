@@ -195,6 +195,10 @@ div.window {
   flex-wrap: wrap;
   transform-style: preserve-3d;
 }
+div.window.minimized {
+  display: none;
+  pointer-events: none;
+}
 div.window:not(.focused)::after {
   border-top-color: var(--border);
 }
@@ -236,8 +240,11 @@ div.window > header.window-header > h2.header-title {
   text-align: center;
   max-width: calc(100% - 72px);
 }
-div.window > header.window-header > button.close {
+div.window > header.window-header > button {
   padding: 0.25rem;
+  background-color: var(--background-2);
+}
+div.window > header.window-header > button.close {
   background-color: var(--red);
   color: var(--text);
 }

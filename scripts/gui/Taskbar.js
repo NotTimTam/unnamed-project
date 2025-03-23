@@ -38,8 +38,12 @@ export default class Taskbar extends Anchor {
 			tabButton.className = "tab";
 			tabButton.classList.toggle("active", window.onTop);
 			tabButton.innerHTML = `${window.title}`;
-			tabButton.onclick = () =>
-				window.onTop ? window.blur() : window.bringToTop();
+			tabButton.onclick = () => {
+				if (window.onTop) {
+					if (window.minimizable) window.minimize();
+					else window.blur();
+				} else window.bringToTop();
+			};
 
 			tabParent.appendChild(tabButton);
 		}

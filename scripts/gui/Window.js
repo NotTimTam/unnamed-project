@@ -7,11 +7,16 @@ export default class Window extends Anchor {
 	/**
 	 * Create a new `Window` instance.
 	 * @param {Desktop} desktop The desktop to use.
+	 * @param {boolean} minimizable Whether this window can be minimized.
+	 * @param {boolean} maximizable Whether this window can be maximized.
 	 */
-	constructor(desktop) {
+	constructor(desktop, minimizable = true, maximizable = true) {
 		super(document.createElement("div"), desktop.runtime);
 		this.desktop = desktop;
 		this.gui = desktop.gui;
+
+		this.minimizable = minimizable;
+		this.maximizable = maximizable;
 
 		this.initialized = desktop.runtime.lft;
 
@@ -54,10 +59,20 @@ export default class Window extends Anchor {
 	};
 
 	/**
+	 * Minimize the window.
+	 */
+	minimize() {
+		this.element.classList.toggle("minimized", true);
+
+		this.blur();
+	}
+
+	/**
 	 * Bring this window to the forefront of the z-order.
 	 */
 	bringToTop = () => {
 		this.element.focus();
+		this.element.classList.toggle("minimized", false);
 
 		this.desktop.windows.splice(this.desktop.windows.indexOf(this), 1);
 		this.desktop.windows.unshift(this);
@@ -127,13 +142,23 @@ export default class Window extends Anchor {
 		header.appendChild(title);
 		title.innerHTML = "Untitled Window";
 
-		const button = document.createElement("button");
-		button.type = "button";
-		button.className = "close";
-		button.title = "Close window.";
-		button.innerText = "X";
-		button.onclick = () => this.close();
-		header.appendChild(button);
+		if (this.minimizable) {
+			const minimizeButton = document.createElement("button");
+			minimizeButton.type = "button";
+			minimizeButton.className = "minimize";
+			minimizeButton.title = "Minimize window.";
+			minimizeButton.innerText = "_";
+			minimizeButton.onclick = () => this.minimize();
+			header.appendChild(minimizeButton);
+		}
+
+		const closeButton = document.createElement("button");
+		closeButton.type = "button";
+		closeButton.className = "close";
+		closeButton.title = "Close window.";
+		closeButton.innerText = "X";
+		closeButton.onclick = () => this.close();
+		header.appendChild(closeButton);
 
 		this.element.prepend(header);
 	}

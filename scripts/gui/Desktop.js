@@ -23,9 +23,11 @@ export default class Desktop extends Anchor {
 		/**
 		 * Create a new `Window` instance.
 		 * @returns {Window} The new `Window` instance.
+		 * @param {boolean} minimizable Whether this window can be minimized.
+		 * @param {boolean} maximizable Whether this window can be maximized.
 		 */
-		this.Window = () => {
-			const window = new Window(this);
+		this.Window = (minimizable, maximizable) => {
+			const window = new Window(this, minimizable, maximizable);
 
 			this.windows.push(window);
 			window.move(
@@ -55,6 +57,8 @@ export default class Desktop extends Anchor {
 		onTick,
 		onBeforeTick,
 		onAfterTick,
+		minimizable,
+		maximizable,
 	}) => {
 		const isOpen = this.windows.find(({ id: fid }) => fid === id);
 		if (isOpen) {
@@ -63,7 +67,7 @@ export default class Desktop extends Anchor {
 			return;
 		}
 
-		const window = this.Window();
+		const window = this.Window(minimizable, maximizable);
 
 		window.id = id;
 		window.title = title;
