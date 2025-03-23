@@ -30,14 +30,16 @@ export default class Taskbar extends Anchor {
 
 		tabParent.innerHTML = null;
 
-		for (const window of windows) {
+		for (const window of windows.sort(
+			(a, b) => a.initialized - b.initialized
+		)) {
 			const tabButton = document.createElement("button");
 			tabButton.type = "button";
-			tabButton.onclick = () => window.bringToTop();
 			tabButton.className = "tab";
 			tabButton.classList.toggle("active", window.onTop);
-
 			tabButton.innerHTML = `${window.title}`;
+			tabButton.onclick = () =>
+				window.onTop ? window.blur() : window.bringToTop();
 
 			tabParent.appendChild(tabButton);
 		}

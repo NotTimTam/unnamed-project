@@ -13,6 +13,8 @@ export default class Window extends Anchor {
 		this.desktop = desktop;
 		this.gui = desktop.gui;
 
+		this.initialized = desktop.runtime.lft;
+
 		this.__initializeElements();
 	}
 
@@ -38,8 +40,18 @@ export default class Window extends Anchor {
 	 * Whether this window is on top and in focus.
 	 */
 	get onTop() {
-		return this.desktop.windows[0] === this;
+		return this.element.classList.contains("focused");
 	}
+
+	/**
+	 * Blur the window so it is no longer "on top" of the context.
+	 */
+	blur = () => {
+		this.element.blur();
+		this.element.classList.toggle("focused", false);
+
+		this.gui.taskbar.reloadTabs();
+	};
 
 	/**
 	 * Bring this window to the forefront of the z-order.

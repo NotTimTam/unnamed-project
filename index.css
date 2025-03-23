@@ -95,6 +95,9 @@ html body main.desktop > button.application-button > span.button-pretty {
 }
 html body footer.taskbar {
   grid-row: 2/3;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   background-color: var(--background-2);
   border-top: 1px solid var(--border);
   justify-content: space-between;

@@ -88,6 +88,11 @@ export default class Desktop extends Anchor {
 	__initializeElements() {
 		this.element.className = "desktop";
 		this.element.innerHTML = null;
+		this.element.onclick = ({ target }) => {
+			if (target !== this.element) return;
+
+			this.windows[0] && this.windows[0].blur();
+		};
 
 		for (const application of applications) {
 			const applicationButton = document.createElement("button");

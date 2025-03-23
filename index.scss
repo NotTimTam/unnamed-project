@@ -113,6 +113,8 @@ html {
 		footer.taskbar {
 			grid-row: 2 / 3;
 
+			user-select: none;
+
 			background-color: var(--background-2);
 			border-top: 1px solid var(--border);
 
