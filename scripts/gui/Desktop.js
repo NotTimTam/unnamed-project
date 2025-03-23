@@ -79,7 +79,7 @@ export default class Desktop extends Anchor {
 		if (onBeforeTick) window.onBeforeTick = onBeforeTick;
 		if (onAfterTick) window.onAfterTick = onAfterTick;
 
-		this.element.appendChild(window.element);
+		document.body.appendChild(window.element);
 
 		window.bringToTop();
 	};
