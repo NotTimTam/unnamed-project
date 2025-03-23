@@ -152,6 +152,8 @@ export default class Window extends Anchor {
 		window.removeEventListener("mouseup", this.endDrag);
 
 		this.destroy();
+
+		this.gui.taskbar.reloadTabs();
 	}
 
 	/**
