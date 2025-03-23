@@ -3,6 +3,7 @@ import Anchor from "../gui/Anchor.js";
 import Text from "../gui/Text.js";
 import Button from "../gui/Button.js";
 import Desktop from "../gui/Desktop.js";
+import Taskbar from "../gui/Taskbar.js";
 
 /**
  * Manages GUI elements.
@@ -38,6 +39,8 @@ export default class GUI extends Construct {
 		 * @returns {Window} The new `Window` instance.
 		 */
 		this.Button = (text, event) => new Button(text, event, runtime);
+
+		this.taskbar = new Taskbar(this);
 	}
 
 	/**

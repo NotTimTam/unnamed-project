@@ -35,6 +35,13 @@ export default class Window extends Anchor {
 	}
 
 	/**
+	 * Whether this window is on top and in focus.
+	 */
+	get onTop() {
+		return this.desktop.windows[0] === this;
+	}
+
+	/**
 	 * Bring this window to the forefront of the z-order.
 	 */
 	bringToTop = () => {
@@ -49,6 +56,8 @@ export default class Window extends Anchor {
 			window.element.classList.toggle("focused", window === this);
 			window.element.style.zIndex = this.desktop.windows.length - +i + 1;
 		}
+
+		this.gui.taskbar.reloadTabs();
 	};
 
 	beginDrag = ({ clientX, clientY }) => {
@@ -140,8 +149,17 @@ export default class Window extends Anchor {
 	 */
 	move = (x, y) => {
 		this.element.style.top =
-			Math.max(Math.min(y, window.innerHeight - 16), 0) + "px";
+			Math.max(
+				Math.min(
+					y,
+					window.innerHeight -
+						this.gui.taskbar.rect.height -
+						this.rect.height
+				),
+				0
+			) + "px";
 		this.element.style.left =
-			Math.max(Math.min(x, window.innerWidth - 16), 0) + "px";
+			Math.max(Math.min(x, window.innerWidth - this.rect.width), 0) +
+			"px";
 	};
 }

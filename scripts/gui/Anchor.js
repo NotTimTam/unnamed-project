@@ -16,6 +16,13 @@ export default class Anchor extends Construct {
 	}
 
 	/**
+	 * Get the window's bounding client rect.
+	 */
+	get rect() {
+		return this.element.getBoundingClientRect();
+	}
+
+	/**
 	 * Erase this anchor's element and the reference to it.
 	 * The next step would be to erase all references to this anchor in order to fully remove it.
 	 */

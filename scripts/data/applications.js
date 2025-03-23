@@ -201,7 +201,9 @@ export default [
 		},
 		onTick: (runtime, window) => {
 			let saveDisplay = JSON.parse(JSON.stringify(runtime.save));
-			saveDisplay.player.journal = `[ ${saveDisplay.player.journal.length} entries ]`;
+			saveDisplay.player.journal = `[ ${
+				saveDisplay.player.journal.length
+			} entr${saveDisplay.player.journal.length === 1 ? "y" : "ies"} ]`;
 
 			window.saveDisplay.innerHTML = JSON.stringify(saveDisplay);
 		},
