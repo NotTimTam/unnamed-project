@@ -311,6 +311,10 @@ div.window {
 			padding: 0.25rem;
 			background-color: var(--background-2);
 
+			&:not(:first-of-type) {
+				margin-left: 0.25rem;
+			}
+
 			&.close {
 				background-color: var(--red);
 				color: var(--text);

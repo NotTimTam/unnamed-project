@@ -244,6 +244,9 @@ div.window > header.window-header > button {
   padding: 0.25rem;
   background-color: var(--background-2);
 }
+div.window > header.window-header > button:not(:first-of-type) {
+  margin-left: 0.25rem;
+}
 div.window > header.window-header > button.close {
   background-color: var(--red);
   color: var(--text);
