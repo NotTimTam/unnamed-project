@@ -129,17 +129,21 @@ export default [
 
 				buttonGroup.appendChild(
 					runtime.gui.Button("DELETE", () => {
-						const comf = confirm(
-							"Are you sure you want to permanently delete this entry?"
+						runtime.gui.desktop.Dialogue(
+							"Warning",
+							"Are you sure you want to permanently delete this entry?",
+							true,
+							(res) => {
+								if (res) {
+									runtime.save.player.journal =
+										runtime.save.player.journal.filter(
+											(_, i) => +i !== +id
+										);
+									window.showList();
+								}
+							},
+							window
 						);
-
-						if (comf) {
-							runtime.save.player.journal =
-								runtime.save.player.journal.filter(
-									(_, i) => +i !== +id
-								);
-							window.showList();
-						}
 					}).element
 				);
 
