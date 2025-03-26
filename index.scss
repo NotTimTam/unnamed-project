@@ -242,13 +242,31 @@ div.window {
 		pointer-events: none;
 	}
 
-	&:not(.focused) {
-		&::after {
-			border-top-color: var(--border);
+	&.disabled {
+		pointer-events: none !important;
+		opacity: 0.5;
+
+		*,
+		*::before,
+		*::after {
+			pointer-events: none !important;
 		}
 	}
 
-	&:has(> header.window-header > div.drag-area:active) {
+	&.focused:not(.disabled),
+	&.dialogue {
+		&::after {
+			border-top-color: var(--yellow);
+		}
+	}
+
+	&.dialogue {
+		flex-direction: column;
+
+		align-items: center;
+	}
+
+	&:has(> header.window-header > div.drag-area:active):not(.dialogue) {
 		*:not(> header.window-header > div.drag-area:active) {
 			pointer-events: none;
 		}
@@ -330,7 +348,6 @@ div.window {
 	&::after {
 		content: "";
 		border: 3px double var(--border);
-		border-top-color: var(--yellow);
 
 		position: absolute;
 
@@ -374,17 +391,6 @@ div.window {
 
 		> button {
 			width: 100%;
-		}
-
-		div.button-group {
-			display: flex;
-			flex-direction: row;
-			gap: 0.25rem;
-			flex-wrap: wrap;
-
-			button {
-				flex-grow: 2;
-			}
 		}
 
 		textarea {
@@ -444,6 +450,17 @@ div.window {
 					}
 				}
 			}
+		}
+	}
+
+	div.button-group {
+		display: flex;
+		flex-direction: row;
+		gap: 0.25rem;
+		flex-wrap: wrap;
+
+		button {
+			flex-grow: 2;
 		}
 	}
 }

@@ -199,10 +199,23 @@ div.window.minimized {
   display: none;
   pointer-events: none;
 }
-div.window:not(.focused)::after {
-  border-top-color: var(--border);
+div.window.disabled {
+  pointer-events: none !important;
+  opacity: 0.5;
 }
-div.window:has(> header.window-header > div.drag-area:active) > header.window-header > h2.header-title {
+div.window.disabled *,
+div.window.disabled *::before,
+div.window.disabled *::after {
+  pointer-events: none !important;
+}
+div.window.focused:not(.disabled)::after, div.window.dialogue::after {
+  border-top-color: var(--yellow);
+}
+div.window.dialogue {
+  flex-direction: column;
+  align-items: center;
+}
+div.window:has(> header.window-header > div.drag-area:active):not(.dialogue) > header.window-header > h2.header-title {
   background-color: var(--orange);
 }
 div.window > header.window-header {
@@ -257,7 +270,6 @@ div.window > header.window-header > button.close::before, div.window > header.wi
 div.window::after {
   content: "";
   border: 3px double var(--border);
-  border-top-color: var(--yellow);
   position: absolute;
   top: 0.5rem;
   left: 0.5rem;
@@ -289,15 +301,6 @@ div.window div.journal-content {
 }
 div.window div.journal-content > button {
   width: 100%;
-}
-div.window div.journal-content div.button-group {
-  display: flex;
-  flex-direction: row;
-  gap: 0.25rem;
-  flex-wrap: wrap;
-}
-div.window div.journal-content div.button-group button {
-  flex-grow: 2;
 }
 div.window div.journal-content textarea {
   width: 256px;
@@ -342,4 +345,13 @@ div.window div.journal-content ul.journal-entry-list li button h3 {
 }
 div.window div.journal-content ul.journal-entry-list li button p#start {
   opacity: 0.5;
+}
+div.window div.button-group {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+div.window div.button-group button {
+  flex-grow: 2;
 }/*# sourceMappingURL=index.css.map */

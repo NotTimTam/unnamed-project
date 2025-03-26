@@ -34,6 +34,41 @@ export default class Desktop extends Anchor {
 				16 + this.windows.length * 32
 			);
 
+			document.body.appendChild(window.element);
+
+			return window;
+		};
+
+		/**
+		 * Create a new `Window.Dialogue` instance.
+		 * @param {string} title The title of the window.
+		 * @param {string} message The message of the window.
+		 * @param {boolean} confirmation Whether to show a "ok/cancel" dialogue instead of an "ok" dialogue.
+		 * @param {function} onClose A method to run when the app closes, is passed a true/false based on input.
+		 * @param {Window} origin An optional origin window. If provided, the window will be disabled until the alert is closed.
+		 */
+		this.Dialogue = (title, message, confirmation, onClose, origin) => {
+			const window = new Window.Dialogue(
+				this,
+				title,
+				message,
+				confirmation,
+				onClose,
+				origin
+			);
+
+			origin.dialogues.push(window);
+			if (origin) window.move(origin.rect.x + 16, origin.rect.y + 16);
+			else
+				window.move(
+					16 + this.windows.length * 32,
+					16 + this.windows.length * 32
+				);
+
+			document.body.appendChild(window.element);
+
+			window.bringToTop();
+
 			return window;
 		};
 	}
@@ -78,8 +113,6 @@ export default class Desktop extends Anchor {
 			};
 		if (onBeforeTick) window.onBeforeTick = onBeforeTick;
 		if (onAfterTick) window.onAfterTick = onAfterTick;
-
-		document.body.appendChild(window.element);
 
 		window.bringToTop();
 	};

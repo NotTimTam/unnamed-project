@@ -1,7 +1,7 @@
 import Runtime from "./scripts/core/Runtime.js";
 
 const runtime = new Runtime(Runtime.getLocalStorageSave());
-// window.runtime = runtime;
+window.runtime = runtime;
 
 runtime.start();
 

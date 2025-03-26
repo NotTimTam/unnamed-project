@@ -73,9 +73,15 @@ export default [
 
 				buttonGroup.appendChild(
 					runtime.gui.Button("SAVE", () => {
-						if (input.value.trim() === "")
-							alert("You cannot save an empty journal entry.");
-						else {
+						if (input.value.trim() === "") {
+							runtime.gui.desktop.Dialogue(
+								"Warning",
+								"You cannot save an empty journal entry.",
+								false,
+								() => {},
+								window
+							);
+						} else {
 							runtime.save.player.journal.push({
 								data: input.value.trim(),
 								time: runtime.save.time,
@@ -88,11 +94,15 @@ export default [
 
 				buttonGroup.appendChild(
 					runtime.gui.Button("CANCEL", () => {
-						const comf = confirm(
-							"Are you sure you want to close without saving entry?"
+						runtime.gui.desktop.Dialogue(
+							"Warning",
+							"Are you sure you want to close without saving entry?",
+							true,
+							(res) => {
+								if (res) window.showList();
+							},
+							window
 						);
-
-						if (comf) window.showList();
 					}).element
 				);
 

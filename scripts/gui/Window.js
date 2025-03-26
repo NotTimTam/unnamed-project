@@ -5,6 +5,62 @@ import Anchor from "./Anchor.js";
  */
 export default class Window extends Anchor {
 	/**
+	 * A dialogue window.
+	 */
+	static Dialogue = class extends Window {
+		/**
+		 * Create a new `Window.Dialogue` instance.
+		 * @param {Desktop} desktop The desktop to use.
+		 * @param {string} title The title of the window.
+		 * @param {string} message The message of the window.
+		 * @param {boolean} confirmation Whether to show a "ok/cancel" dialogue instead of an "ok" dialogue.
+		 * @param {function} onClose A method to run when the app closes, is passed a true/false based on input.
+		 * @param {Window} origin An optional origin window. If provided, the window will be disabled until the alert is closed.
+		 */
+		constructor(desktop, title, message, confirmation, onClose, origin) {
+			super(desktop, false);
+
+			this.origin = origin;
+			if (this.origin) this.origin.disabled = true;
+
+			this.onClose = onClose;
+
+			const messageContainer = document.createElement("p");
+			messageContainer.className = "message";
+			messageContainer.innerHTML = message;
+
+			this.element.appendChild(messageContainer);
+
+			const buttonGroup = document.createElement("div");
+			buttonGroup.className = "button-group";
+
+			buttonGroup.appendChild(
+				desktop.gui.Button("OK", () => {
+					onClose(true);
+					if (this.origin && this.origin.dialogues.length < 2)
+						this.origin.disabled = false;
+					this.close();
+				}).element
+			);
+
+			if (confirmation) {
+				buttonGroup.appendChild(
+					desktop.gui.Button("CANCEL", () => {
+						onClose(false);
+						if (this.origin && this.origin.dialogues.length < 2)
+							this.origin.disabled = false;
+						this.close();
+					}).element
+				);
+			}
+
+			this.element.appendChild(buttonGroup);
+
+			this.title = title;
+		}
+	};
+
+	/**
 	 * Create a new `Window` instance.
 	 * @param {Desktop} desktop The desktop to use.
 	 * @param {boolean} minimizable Whether this window can be minimized.
@@ -13,6 +69,8 @@ export default class Window extends Anchor {
 		super(document.createElement("div"), desktop.runtime);
 		this.desktop = desktop;
 		this.gui = desktop.gui;
+
+		this.dialogues = [];
 
 		this.minimizable = minimizable;
 
@@ -37,6 +95,20 @@ export default class Window extends Anchor {
 		this.element.querySelector(
 			"header.window-header h2.header-title"
 		).innerText = n;
+	}
+
+	/**
+	 * Get whether the window is enabled.
+	 */
+	get disabled() {
+		return this.element.classList.contains("disabled");
+	}
+
+	/**
+	 * Set the window enabled/disabled.
+	 */
+	set disabled(n) {
+		this.element.classList.toggle("disabled", n);
 	}
 
 	/**
@@ -116,7 +188,9 @@ export default class Window extends Anchor {
 	 * **Internal method.** Initializes a window's elements.
 	 */
 	__initializeElements() {
-		this.element.className = "window";
+		this.element.className = `window${
+			this instanceof Window.Dialogue ? " dialogue" : ""
+		}`;
 
 		const header = document.createElement("header");
 		header.className = "window-header";
@@ -125,22 +199,24 @@ export default class Window extends Anchor {
 		dragArea.className = "drag-area";
 		header.appendChild(dragArea);
 
-		this.element.addEventListener("mousedown", this.bringToTop);
-		window.addEventListener("mousemove", this.mouseMove);
-		window.addEventListener("blur", this.mouseMove);
-		window.addEventListener("mouseup", this.endDrag);
-		dragArea.addEventListener("mousedown", this.beginDrag);
+		if (!(this instanceof Window.Dialogue)) {
+			this.element.addEventListener("mousedown", this.bringToTop);
+			window.addEventListener("mousemove", this.mouseMove);
+			window.addEventListener("blur", this.mouseMove);
+			window.addEventListener("mouseup", this.endDrag);
+			dragArea.addEventListener("mousedown", this.beginDrag);
 
-		dragArea.onmousedown = () => {
-			this.inDrag = true;
-		};
+			dragArea.onmousedown = () => {
+				this.inDrag = true;
+			};
+		}
 
 		const title = document.createElement("h2");
 		title.className = "header-title";
 		header.appendChild(title);
 		title.innerHTML = "Untitled Window";
 
-		if (this.minimizable) {
+		if (this.minimizable && !(this instanceof Window.Dialogue)) {
 			const minimizeButton = document.createElement("button");
 			minimizeButton.type = "button";
 			minimizeButton.className = "minimize";
@@ -150,13 +226,15 @@ export default class Window extends Anchor {
 			header.appendChild(minimizeButton);
 		}
 
-		const closeButton = document.createElement("button");
-		closeButton.type = "button";
-		closeButton.className = "close";
-		closeButton.title = "Close window.";
-		closeButton.innerText = "X";
-		closeButton.onclick = () => this.close();
-		header.appendChild(closeButton);
+		if (!(this instanceof Window.Dialogue)) {
+			const closeButton = document.createElement("button");
+			closeButton.type = "button";
+			closeButton.className = "close";
+			closeButton.title = "Close window.";
+			closeButton.innerText = "X";
+			closeButton.onclick = () => this.close();
+			header.appendChild(closeButton);
+		}
 
 		this.element.prepend(header);
 	}
@@ -165,18 +243,23 @@ export default class Window extends Anchor {
 	 * Close this window.
 	 */
 	close() {
-		this.desktop.windows = this.desktop.windows.filter(
-			(window) => window !== this
-		);
+		if (!(this instanceof Window.Dialogue)) {
+			this.desktop.windows = this.desktop.windows.filter(
+				(window) => window !== this
+			);
 
-		this.element.removeEventListener("mousedown", this.bringToTop);
-		window.removeEventListener("mousemove", this.mouseMove);
-		window.removeEventListener("blur", this.mouseMove);
-		window.removeEventListener("mouseup", this.endDrag);
+			this.element.removeEventListener("mousedown", this.bringToTop);
+			window.removeEventListener("mousemove", this.mouseMove);
+			window.removeEventListener("blur", this.mouseMove);
+			window.removeEventListener("mouseup", this.endDrag);
+
+			this.gui.taskbar.reloadTabs();
+		} else if (this.origin)
+			this.origin.dialogues = this.origin.dialogues.filter(
+				(dialogue) => dialogue !== this
+			);
 
 		this.destroy();
-
-		this.gui.taskbar.reloadTabs();
 	}
 
 	/**
