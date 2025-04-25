@@ -39,9 +39,9 @@ export default class Fabricator extends Anchor {
 		if (type === "part")
 			display.innerHTML = `<b class="dmg">+${damage}PT DMG</b> to ${name}`;
 		else
-			display.innerHTML = `${
-				consumed ? "" : `<b class="nc"></b> `
-			} ${name}`;
+			display.innerHTML = `${consumed ? "" : `<b class="nc"></b> `} ${
+				tools[name].label
+			}`;
 
 		return display;
 	}

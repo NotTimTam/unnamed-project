@@ -36,6 +36,24 @@ export default [
 		],
 	},
 	{
+		label: "Cut Down Tree",
+		stamina: 15,
+		tools: [
+			{
+				name: "sharpened_stone",
+				amount: 1,
+				consumed: true,
+			},
+		],
+		outcomes: [
+			{
+				name: "wood",
+				type: "good",
+				amount: 3,
+			},
+		],
+	},
+	{
 		label: "Extract Fiber",
 		goods: [
 			{
