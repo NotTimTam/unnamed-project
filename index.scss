@@ -92,20 +92,6 @@ html {
 			> ul {
 				list-style: none;
 				margin-left: 0;
-
-				&.goods:not(:has(:first-child)) {
-					&::after {
-						display: inline;
-						content: "You have no goods.";
-					}
-				}
-
-				&.tools:not(:has(:first-child)) {
-					&::after {
-						display: inline;
-						content: "You have no tools.";
-					}
-				}
 			}
 		}
 

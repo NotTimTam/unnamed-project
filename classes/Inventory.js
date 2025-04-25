@@ -1,5 +1,4 @@
-import goods from "../data/goods.js";
-import tools from "../data/tools.js";
+import items from "../data/items.js";
 import Anchor from "./Anchor.js";
 import Creature from "./Creature.js";
 
@@ -22,29 +21,17 @@ export default class Inventory extends Anchor {
 	 * Update the inventory display.
 	 */
 	updateDisplay() {
-		if (
-			(!this.player.goods ||
-				Object.keys(this.player.goods).length === 0) &&
-			(!this.player.tools || Object.keys(this.player.tools).length === 0)
-		)
+		if (!this.player.items || Object.keys(this.player.items).length === 0)
 			this.element.innerHTML = `<h2>Inventory</h2><p>Inventory empty.</p>`;
 		else {
-			this.element.innerHTML = `<h2>Inventory</h2><p>Goods:</p><ul class="goods"></ul><p>Tools:</p><ul class="tools"></ul>`;
+			this.element.innerHTML = `<h2>Inventory</h2><ul class="items"></ul>`;
 
-			for (const [good, count] of Object.entries(this.player.goods)) {
-				const goodDisplay = document.createElement("li");
+			for (const [item, count] of Object.entries(this.player.items)) {
+				const itemDisplay = document.createElement("li");
 
-				goodDisplay.innerHTML = `${goods[good].label} &mdash; ${count}`;
+				itemDisplay.innerHTML = `${items[item].label} &mdash; ${count}`;
 
-				this.element.querySelector("ul.goods").appendChild(goodDisplay);
-			}
-
-			for (const [tool, count] of Object.entries(this.player.tools)) {
-				const toolDisplay = document.createElement("li");
-
-				toolDisplay.innerHTML = `${tools[tool].label} &mdash; ${count}`;
-
-				this.element.querySelector("ul.tools").appendChild(toolDisplay);
+				this.element.querySelector("ul.items").appendChild(itemDisplay);
 			}
 		}
 	}

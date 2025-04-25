@@ -4,11 +4,11 @@ export default class Planet extends Entity {
 	/**
 	 * Create a new `Planet` instance.
 	 * @param {String} name The name of the planet.
-	 * @param {Object} goods The goods configuration for this planet.
+	 * @param {Object} items The items configuration for this planet.
 	 */
-	constructor(name, goods) {
+	constructor(name, items) {
 		super(name);
 
-		this.goods = goods;
+		this.items = items;
 	}
 }

@@ -5,7 +5,6 @@ export default [
 		outcomes: [
 			{
 				name: "rock",
-				type: "good",
 				amount: 1,
 			},
 		],
@@ -13,32 +12,30 @@ export default [
 	{
 		label: "Sharpen Stone",
 		stamina: 5,
-		goods: [
+		items: [
 			{
 				name: "rock",
 				amount: 2,
 				consumed: true,
 			},
 		],
-		tools: [
+		parts: [
 			{
 				name: "arm",
-				type: "part",
 				damage: 1,
 			},
 		],
 		outcomes: [
 			{
 				name: "sharpened_stone",
-				type: "tool",
 				amount: 1,
 			},
 		],
 	},
 	{
-		label: "Cut Down Tree",
+		label: "Delimb Tree",
 		stamina: 15,
-		tools: [
+		items: [
 			{
 				name: "sharpened_stone",
 				amount: 1,
@@ -48,31 +45,23 @@ export default [
 		outcomes: [
 			{
 				name: "wood",
-				type: "good",
-				amount: 3,
+				amount: 1,
 			},
 		],
 	},
 	{
 		label: "Extract Fiber",
-		goods: [
+		items: [
 			{
 				name: "wood",
 				amount: 1,
 				consumed: true,
 			},
 		],
-		tools: [
-			{
-				name: "sharpened_stone",
-				amount: 1,
-				consumed: false,
-			},
-		],
+
 		outcomes: [
 			{
 				name: "fiber",
-				type: "good",
 				amount: 5,
 			},
 		],

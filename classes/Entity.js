@@ -1,4 +1,3 @@
-import Creature from "./Creature.js";
 import Prefab from "./Prefab.js";
 
 export default class Entity extends Prefab {
@@ -9,73 +8,48 @@ export default class Entity extends Prefab {
 	constructor(name) {
 		super();
 
-		this._tools = {};
-		this._goods = {};
+		this._items = {};
 		this.name = name;
 	}
 
-	get goods() {
-		return this._goods || {};
+	get items() {
+		return this._items || {};
 	}
 
-	set goods(v) {
-		this._goods = v;
+	set items(v) {
+		this._items = v;
 
-		if (this.onGoodsChange) this.onGoodsChange(v);
-	}
-
-	get tools() {
-		return this._tools || {};
-	}
-
-	set tools(v) {
-		this._tools = v;
-
-		if (this.onToolsChange) this.onToolsChange(v);
+		if (this.onItemsChange) this.onItemsChange(v);
 	}
 
 	/**
-	 * Change the amount of a good an entity should have.
-	 * @param {String} good The name of the good to change.
-	 * @param {Number} n The amount by which to change good count.
+	 * Change the amount of a item an entity should have.
+	 * @param {String} item The name of the item to change.
+	 * @param {Number} n The amount by which to change item count.
 	 */
-	addGood(good, n) {
-		const newGoods = { ...this.goods };
-		newGoods[good] = (this.goods[good] || 0) + n;
+	addItem(item, n) {
+		const newItems = { ...this.items };
+		newItems[item] = (this.items[item] || 0) + n;
 
-		if (newGoods[good] === 0) delete newGoods[good];
+		if (newItems[item] === 0) delete newItems[item];
 
-		this.goods = newGoods;
+		this.items = newItems;
 	}
 
 	/**
-	 * Change the amount of a tool an entity should have.
-	 * @param {String} tool The name of the tool to change.
-	 * @param {Number} n The amount by which to change tool count.
-	 */
-	addTool(tool, n) {
-		const newTools = { ...this.tools };
-		newTools[tool] = (this.tools[tool] || 0) + n;
-
-		if (newTools[tool] === 0) delete newTools[tool];
-
-		this.tools = newTools;
-	}
-
-	/**
-	 * Give another entity some of this entity's good.
-	 * @param {String} good The name of the good to give.
+	 * Give another entity some of this entity's item.
+	 * @param {String} item The name of the item to give.
 	 * @param {Number} n The amount to give.
-	 * @param {Entity} entity The entity to give the good to.
+	 * @param {Entity} entity The entity to give the item to.
 	 */
-	giveGood(good, n, entity) {
+	giveItem(item, n, entity) {
 		if (!entity || !(entity instanceof Entity))
 			throw new Error("Provided object is not an entity.");
 
-		if (!this.goods[good] || this.goods[good] < n)
-			throw new Error(`Entity does not have ${n} "${good}."`);
+		if (!this.items[item] || this.items[item] < n)
+			throw new Error(`Entity does not have ${n} "${item}."`);
 
-		this.addGood(good, -n);
-		entity.addGood(good, n);
+		this.addItem(item, -n);
+		entity.addItem(item, n);
 	}
 }

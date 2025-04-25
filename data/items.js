@@ -189,4 +189,12 @@ export default {
 		label: "Fiber",
 		unit: "cord",
 	},
+	sharpened_stone: {
+		label: "Sharpened Stone",
+		unit: "ton",
+	},
+	rope: {
+		label: "Rope",
+		unit: "cord",
+	},
 };

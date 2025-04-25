@@ -1,5 +1,3 @@
-import goods from "../data/goods.js";
-import tools from "../data/tools.js";
 import Anchor from "./Anchor.js";
 import Creature from "./Creature.js";
 

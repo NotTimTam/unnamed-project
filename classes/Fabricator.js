@@ -1,6 +1,5 @@
-import goods from "../data/goods.js";
+import items from "../data/items.js";
 import schematics from "../data/schematics.js";
-import tools from "../data/tools.js";
 import Anchor from "./Anchor.js";
 import Creature from "./Creature.js";
 
@@ -19,41 +18,36 @@ export default class Fabricator extends Anchor {
 		this.updateDisplay();
 	}
 
-	goodDisplay(good) {
-		const { name, amount, consumed } = good;
+	itemDisplay(item) {
+		const { name, amount, consumed } = item;
 
 		const display = document.createElement("li");
 
 		display.innerHTML = `${
 			consumed ? "" : `<b class="nc"></b> `
-		}${amount} ${goods[name].label}${amount === 1 ? "" : "s"}`;
+		}${amount} ${items[name].label}${amount === 1 ? "" : "s"}`;
 
 		return display;
 	}
 
-	toolDisplay(tool) {
-		const { name, type, damage, consumed } = tool;
+	partDisplay(part) {
+		const { name, damage } = part;
 
 		const display = document.createElement("li");
 
-		if (type === "part")
-			display.innerHTML = `<b class="dmg">+${damage}PT DMG</b> to ${name}`;
-		else
-			display.innerHTML = `${consumed ? "" : `<b class="nc"></b> `} ${
-				tools[name].label
-			}`;
+		display.innerHTML = `<b class="dmg">+${damage}PT DMG</b> to ${name}`;
 
 		return display;
 	}
 
 	outcomeDisplay(outcome) {
-		const { name, type, amount } = outcome;
+		const { name, amount } = outcome;
 
 		const display = document.createElement("li");
 
-		display.innerHTML = `${amount} <b>${
-			type === "good" ? goods[name].label : tools[name].label
-		}${amount === 1 ? "" : "s"}</b>`;
+		display.innerHTML = `${amount} <b>${items[name].label}${
+			amount === 1 ? "" : "s"
+		}</b>`;
 
 		return display;
 	}
@@ -72,7 +66,7 @@ export default class Fabricator extends Anchor {
 			this.element.innerHTML = `<h2>Fabrication</h2><ul></ul>`;
 
 			for (const schematic of craftableSchematics) {
-				const { label, goods, tools, outcomes, stamina } = schematic;
+				const { label, items, parts, outcomes, stamina } = schematic;
 
 				const schematicDisplay = document.createElement("li");
 
@@ -81,35 +75,35 @@ export default class Fabricator extends Anchor {
 					<button type="button">
 						<p><b>${label}</b></p>
 						${
-							goods
+							items
 								? `<p>Using:</p>
-						<ul class="goods"></ul>`
+						<ul class="items"></ul>`
 								: ""
 						}
 						${
-							tools || (stamina && stamina > 0)
+							parts || (stamina && stamina > 0)
 								? `<p>Via:</p>
-						<ul class="tools">
+						<ul class="parts">
 							${stamina && stamina > 0 ? `<li><b class="st">-${stamina} ST</b></li>` : ""}
 						</ul>`
 								: ""
 						}
-						${goods || tools || (stamina && stamina > 0) ? `<p>Outcome:</p>` : ""}
+						${items || parts || (stamina && stamina > 0) ? `<p>Outcome:</p>` : ""}
 						<ul class="outcome"></ul>
 					</button>
 				`;
 
-				if (goods)
-					for (const good of goods)
+				if (items)
+					for (const item of items)
 						schematicDisplay
-							.querySelector("ul.goods")
-							.appendChild(this.goodDisplay(good));
+							.querySelector("ul.items")
+							.appendChild(this.itemDisplay(item));
 
-				if (tools)
-					for (const tool of tools)
+				if (parts)
+					for (const part of parts)
 						schematicDisplay
-							.querySelector("ul.tools")
-							.appendChild(this.toolDisplay(tool));
+							.querySelector("ul.parts")
+							.appendChild(this.partDisplay(part));
 
 				for (const outcome of outcomes)
 					schematicDisplay
