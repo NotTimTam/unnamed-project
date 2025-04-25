@@ -51,9 +51,9 @@ export default class Fabricator extends Anchor {
 
 		const display = document.createElement("li");
 
-		display.innerHTML = `${amount} ${
+		display.innerHTML = `${amount} <b>${
 			type === "good" ? goods[name].label : tools[name].label
-		}${amount === 1 ? "" : "s"}`;
+		}${amount === 1 ? "" : "s"}</b>`;
 
 		return display;
 	}
@@ -72,30 +72,44 @@ export default class Fabricator extends Anchor {
 			this.element.innerHTML = `<h2>Fabrication</h2><ul></ul>`;
 
 			for (const schematic of craftableSchematics) {
-				const { goods, tools, outcomes } = schematic;
+				const { label, goods, tools, outcomes, stamina } = schematic;
 
 				const schematicDisplay = document.createElement("li");
 
 				schematicDisplay.className = "schematic";
 				schematicDisplay.innerHTML = `
 					<button type="button">
-						<ul class="goods"></ul>
-						<p>Via:</p>
-						<ul class="tools"></ul>
-						<p>Makes:</p>
+						<p><b>${label}</b></p>
+						${
+							goods
+								? `<p>Using:</p>
+						<ul class="goods"></ul>`
+								: ""
+						}
+						${
+							tools || (stamina && stamina > 0)
+								? `<p>Via:</p>
+						<ul class="tools">
+							${stamina && stamina > 0 ? `<li><b class="st">-${stamina} ST</b></li>` : ""}
+						</ul>`
+								: ""
+						}
+						${goods || tools || (stamina && stamina > 0) ? `<p>Outcome:</p>` : ""}
 						<ul class="outcome"></ul>
 					</button>
 				`;
 
-				for (const good of goods)
-					schematicDisplay
-						.querySelector("ul.goods")
-						.appendChild(this.goodDisplay(good));
+				if (goods)
+					for (const good of goods)
+						schematicDisplay
+							.querySelector("ul.goods")
+							.appendChild(this.goodDisplay(good));
 
-				for (const tool of tools)
-					schematicDisplay
-						.querySelector("ul.tools")
-						.appendChild(this.toolDisplay(tool));
+				if (tools)
+					for (const tool of tools)
+						schematicDisplay
+							.querySelector("ul.tools")
+							.appendChild(this.toolDisplay(tool));
 
 				for (const outcome of outcomes)
 					schematicDisplay

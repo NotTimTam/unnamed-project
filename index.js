@@ -7,17 +7,15 @@ import goods from "./data/goods.js";
 import Inventory from "./classes/Inventory.js";
 import Fabricator from "./classes/Fabricator.js";
 import Stats from "./classes/Stats.js";
-import Actions from "./classes/Actions.js";
-import actions from "./data/actions.js";
-
-import { arraysContainSameObjects } from "./util/array.js";
 
 window.runtime = new Runtime();
 
 runtime.earth = new Planet(
 	"Earth",
 	Object.fromEntries(
-		Object.entries(goods).map(([name, { amount }]) => [name, amount])
+		Object.entries(goods)
+			.filter(([_, { classification }]) => classification === "resource")
+			.map(([name, { amount }]) => [name, amount])
 	)
 );
 
@@ -28,7 +26,6 @@ class Player extends Creature {
 		this.stats = new Stats(this);
 		this.inventory = new Inventory(this);
 		this.fabricator = new Fabricator(this);
-		this.actions = new Actions(this);
 
 		this.onGoodsChange = () => {
 			this.inventory.updateDisplay();
@@ -48,53 +45,7 @@ class Player extends Creature {
 
 		this.onStaminaChange = () => {
 			this.stats.updateDisplay();
-
-			if (
-				!arraysContainSameObjects(
-					this.availableActions,
-					this.actions.actionsOnDisplay
-				)
-			)
-				this.actions.updateDisplay();
 		};
-	}
-
-	get availableActions() {
-		return actions
-			.filter(({ stamina, requires }) => {
-				if (stamina > this.stamina) return false;
-
-				if (requires) {
-					const { tools } = requires;
-
-					if (tools)
-						for (const [tool, amount] of Object.entries(tools)) {
-							if (!this.tools[tool] || this.tools[tool] < amount)
-								return false;
-						}
-				}
-
-				return true;
-			})
-			.map((action) => ({
-				...action,
-				id: actions.indexOf(action),
-				method: () => {
-					this.stamina -= action.stamina;
-
-					if (action.requires) {
-						const { tools } = action.requires;
-
-						if (tools)
-							for (const [tool, amount] of Object.entries(tools))
-								this.addTool(tool, -amount);
-					}
-
-					action.method(window.runtime);
-
-					this.actions.updateDisplay();
-				},
-			}));
 	}
 
 	/**
@@ -103,17 +54,22 @@ class Player extends Creature {
 	 * @returns {boolean} Whether this schematic can currently be fabricated.
 	 */
 	canFabricate(schematic) {
-		for (const good of schematic.goods)
-			if ((this.goods[good.name] || 0) < good.amount) return false;
+		if (schematic.goods)
+			for (const good of schematic.goods)
+				if ((this.goods[good.name] || 0) < good.amount) return false;
 
-		for (const tool of schematic.tools) {
-			if (
-				tool.type === "part" &&
-				this.getHealthOfParts(tool.name) < tool.damage
-			)
-				return false;
-			else if ((this.tools[tool.name] || 0) < tool.amount) return false;
-		}
+		if (schematic.tools)
+			for (const tool of schematic.tools) {
+				if (
+					tool.type === "part" &&
+					this.getHealthOfParts(tool.name) < tool.damage
+				)
+					return false;
+				else if ((this.tools[tool.name] || 0) < tool.amount)
+					return false;
+			}
+
+		if (schematic.stamina && schematic.stamina > this.stamina) return false;
 
 		return true;
 	}
@@ -126,37 +82,41 @@ class Player extends Creature {
 		if (!this.canFabricate(schematic))
 			throw new Error("Entity cannot fabricate that schematic.");
 
-		const { goods, tools, outcomes } = schematic;
+		const { goods, tools, outcomes, stamina } = schematic;
 
-		for (const { name, amount } of goods.filter(
-			({ consumed }) => consumed
-		)) {
-			this.addGood(name, -amount);
-		}
+		if (stamina) this.stamina -= stamina;
+
+		if (goods)
+			for (const { name, amount } of goods.filter(
+				({ consumed }) => consumed
+			)) {
+				this.addGood(name, -amount);
+			}
 
 		let partsDamaged = false;
 
-		for (const { name, type, amount, damage } of tools.filter(
-			({ consumed, type }) => type === "part" || consumed
-		)) {
-			if (type === "part") {
-				const parts = this.getParts(name);
+		if (tools)
+			for (const { name, type, amount, damage } of tools.filter(
+				({ consumed, type }) => type === "part" || consumed
+			)) {
+				if (type === "part") {
+					const parts = this.getParts(name);
 
-				let damageLeft = damage;
+					let damageLeft = damage;
 
-				partLoop: for (const part of parts) {
-					if (part.health < damageLeft) {
-						damageLeft -= part.health;
-						part.health = 0;
-					} else {
-						part.health -= damageLeft;
-						break partLoop;
+					partLoop: for (const part of parts) {
+						if (part.health < damageLeft) {
+							damageLeft -= part.health;
+							part.health = 0;
+						} else {
+							part.health -= damageLeft;
+							break partLoop;
+						}
 					}
-				}
 
-				partsDamaged = true;
-			} else this.addTool(name, -amount);
-		}
+					partsDamaged = true;
+				} else this.addTool(name, -amount);
+			}
 
 		for (const { name, type, amount } of outcomes) {
 			if (type === "tool") this.addTool(name, amount);

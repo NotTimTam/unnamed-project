@@ -185,4 +185,8 @@ export default {
 		amount: 9007199254740991,
 		unit: "ton",
 	},
+	fiber: {
+		label: "Fiber",
+		unit: "cord",
+	},
 };

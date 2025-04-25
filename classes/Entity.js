@@ -43,6 +43,8 @@ export default class Entity extends Prefab {
 		const newGoods = { ...this.goods };
 		newGoods[good] = (this.goods[good] || 0) + n;
 
+		if (newGoods[good] === 0) delete newGoods[good];
+
 		this.goods = newGoods;
 	}
 

@@ -22,7 +22,11 @@ export default class Inventory extends Anchor {
 	 * Update the inventory display.
 	 */
 	updateDisplay() {
-		if (!this.player.goods || Object.keys(this.player.goods).length === 0)
+		if (
+			(!this.player.goods ||
+				Object.keys(this.player.goods).length === 0) &&
+			(!this.player.tools || Object.keys(this.player.tools).length === 0)
+		)
 			this.element.innerHTML = `<h2>Inventory</h2><p>Inventory empty.</p>`;
 		else {
 			this.element.innerHTML = `<h2>Inventory</h2><p>Goods:</p><ul class="goods"></ul><p>Tools:</p><ul class="tools"></ul>`;
