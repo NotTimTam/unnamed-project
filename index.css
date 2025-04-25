@@ -1,0 +1,112 @@
+@import url("https://fonts.googleapis.com/css2?family=Sen:wght@400..800&display=swap");
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  outline: none;
+  border: none;
+  background: none;
+  box-sizing: border-box;
+  font-family: "Sen", sans-serif;
+  font-optical-sizing: auto;
+}
+
+.dmg {
+  color: #cb1f1f;
+}
+
+.nc {
+  color: #3c3588;
+}
+.nc::after {
+  content: "[NC]";
+  display: inline;
+}
+.nc:hover::after {
+  content: "[NOT CONSUMED]";
+}
+
+ul,
+ol {
+  margin-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border: 1px solid grey;
+  background-color: lightgrey;
+  border-radius: 2px;
+  font-size: 1rem;
+}
+
+html {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+html body {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  gap: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+}
+html body div.stats {
+  grid-column: 1/2;
+  grid-row: 1/2;
+}
+html body div.inventory {
+  grid-column: 2/3;
+  grid-row: 1/2;
+}
+html body div.inventory > ul {
+  list-style: none;
+  margin-left: 0;
+}
+html body div.inventory > ul.goods:not(:has(:first-child))::after {
+  display: inline;
+  content: "You have no goods.";
+}
+html body div.inventory > ul.tools:not(:has(:first-child))::after {
+  display: inline;
+  content: "You have no tools.";
+}
+html body div.fabricator {
+  grid-column: 1/2;
+  grid-row: 2/3;
+}
+html body div.fabricator > ul {
+  list-style: none;
+  margin-left: 0;
+  gap: 1rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+html body div.fabricator > ul li.schematic button {
+  text-align: left;
+  flex-direction: column;
+  align-items: flex-start;
+}
+html body div.actions {
+  grid-column: 2/3;
+  grid-row: 2/3;
+}
+html body div.actions ul {
+  list-style: none;
+  margin-left: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}/*# sourceMappingURL=index.css.map */
