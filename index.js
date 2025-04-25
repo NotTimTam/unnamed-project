@@ -61,13 +61,38 @@ class Player extends Creature {
 
 	get availableActions() {
 		return actions
-			.filter(({ stamina, requires }) => stamina <= this.stamina)
+			.filter(({ stamina, requires }) => {
+				if (stamina > this.stamina) return false;
+
+				if (requires) {
+					const { tools } = requires;
+
+					if (tools)
+						for (const [tool, amount] of Object.entries(tools)) {
+							if (!this.tools[tool] || this.tools[tool] < amount)
+								return false;
+						}
+				}
+
+				return true;
+			})
 			.map((action) => ({
 				...action,
 				id: actions.indexOf(action),
 				method: () => {
 					this.stamina -= action.stamina;
+
+					if (action.requires) {
+						const { tools } = action.requires;
+
+						if (tools)
+							for (const [tool, amount] of Object.entries(tools))
+								this.addTool(tool, -amount);
+					}
+
 					action.method(window.runtime);
+
+					this.actions.updateDisplay();
 				},
 			}));
 	}

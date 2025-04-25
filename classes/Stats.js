@@ -22,9 +22,9 @@ export default class Stats extends Anchor {
 	 * Update the stats display.
 	 */
 	updateDisplay() {
-		this.element.innerHTML = `<h2>Stats</h2><p>HP: ${Math.round(
+		this.element.innerHTML = `<h2>Stats</h2><p>HP: ${Math.floor(
 			this.player.health
-		)}/${this.player.maxHealth}</p><p>ST: ${Math.round(
+		)}/${this.player.maxHealth}</p><p>ST: ${Math.floor(
 			this.player.stamina
 		)}/${this.player.maxStamina}</p><ul></ul>`;
 

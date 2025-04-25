@@ -55,6 +55,8 @@ export default class Entity extends Prefab {
 		const newTools = { ...this.tools };
 		newTools[tool] = (this.tools[tool] || 0) + n;
 
+		if (newTools[tool] === 0) delete newTools[tool];
+
 		this.tools = newTools;
 	}
 

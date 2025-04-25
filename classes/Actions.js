@@ -40,17 +40,16 @@ export default class Actions extends Anchor {
 					"div#action-display"
 				).innerHTML = `<ul></ul>`;
 
-			let existingChildren = [];
+			const existingActions = Array.from(
+				this.element.querySelectorAll(`div#action-display > ul > li`)
+			).map((item) => +item.getAttribute("id"));
 
 			for (const { label, method, id } of this.actionsOnDisplay) {
 				const existing = this.element.querySelector(
 					`div#action-display > ul > li[id="${id}"]`
 				);
 
-				if (existing) {
-					existingChildren.push(+existing.getAttribute("id"));
-					continue;
-				}
+				if (existing) continue;
 
 				const actionDisplay = document.createElement("li");
 
@@ -65,15 +64,15 @@ export default class Actions extends Anchor {
 					.appendChild(actionDisplay);
 			}
 
-			if (existingChildren.length > 0)
-				for (const item of this.element.querySelectorAll(
-					"div#action-display > ul > li" +
-						existingChildren
-							.map((id) => `:not([id="${id}"])`)
-							.join("")
-				)) {
-					item.parent.removeChild(item);
-				}
+			for (const id of existingActions.filter(
+				(id) => !this.actionsOnDisplay.map(({ id }) => id).includes(id)
+			)) {
+				const existing = this.element.querySelector(
+					`div#action-display > ul > li[id="${id}"]`
+				);
+
+				if (existing) existing.parentNode.removeChild(existing);
+			}
 		}
 	}
 }

@@ -5,8 +5,8 @@ export default {
 		amount: 9007199254740991,
 		unit: "gallon",
 	},
-	tree: {
-		label: "Tree",
+	wood: {
+		label: "Wood",
 		classification: "resource",
 		amount: 3.0e12,
 		unit: "ton",
